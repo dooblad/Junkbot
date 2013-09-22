@@ -1,9 +1,13 @@
 package com.senior.junkbot;
 
+import bitmaps.Bitmaps;
+
 import com.doobs.java2d.Game2D;
 import com.doobs.java2d.GameLoop;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
+import com.senior.junkbot.entity.Player;
+import com.senior.junkbot.level.Level;
 
 public class Main extends GameLoop{
 	public static final int WIDTH = 320, HEIGHT = 240;
@@ -15,17 +19,24 @@ public class Main extends GameLoop{
 	public static boolean debug = true;
 	
 	private Game2D game;
+	private Level level;
+	private Player player;
 	
 	public Main() {
 		game = new Game2D(WIDTH, HEIGHT, SCALE, NAME, this);
 		game.getBitmapLoader().setIgnoredColors(0xFF00FF);
 		game.setRenderFPS(RENDER_FPS);
 		game.setVSync(VSYNC);
+		
+		Bitmaps.init(game.getBitmapLoader());
+		player = new Player(30, 30);
+		level = new Level(player);
+		
 		game.start();
 	}
 	
 	public void tick(InputHandler input) {
-		
+		level.tick(input);
 	}
 	
 	public void tickPaused(InputHandler input) {
@@ -33,7 +44,8 @@ public class Main extends GameLoop{
 	}
 	
 	public void render(Screen screen) {
-		
+		screen.fill(0xFF000000);
+		level.render(screen);
 	}
 	
 	public void renderPaused(Screen screen) {
