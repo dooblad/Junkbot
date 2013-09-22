@@ -46,7 +46,7 @@ public class Player extends Entity {
 	}
 	
 	public void render(Screen screen) {
-		screen.draw(Bitmaps.player, (int) x, (int) y);
+		screen.draw(Bitmaps.player, (int) (x - level.getCamera().getXO()), (int) (y - level.getCamera().getYO()));
 	}
 	
 	public void respawn() {

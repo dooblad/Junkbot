@@ -8,6 +8,7 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.level.Level;
+import com.senior.junkbot.tile.Tile;
 
 public class Main extends GameLoop{
 	public static final int WIDTH = 320, HEIGHT = 240;
@@ -29,21 +30,18 @@ public class Main extends GameLoop{
 		game.setVSync(VSYNC);
 		
 		Bitmaps.init(game.getBitmapLoader());
+		Tile.init();
 		player = new Player(30, 30);
 		level = new Level(player);
 		
 		game.start();
 	}
 	
-	public void tick(InputHandler input) {
+	public void tick(InputHandler input, boolean paused) {
 		level.tick(input);
 	}
 	
-	public void tickPaused(InputHandler input) {
-		
-	}
-	
-	public void render(Screen screen) {
+	public void render(Screen screen, boolean paused) {
 		screen.fill(0xFF000000);
 		level.render(screen);
 	}

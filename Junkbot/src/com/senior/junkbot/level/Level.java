@@ -21,6 +21,7 @@ import com.senior.junkbot.util.Camera;
 
 public class Level {
     public static final double GRAVITY = 0.2;
+    public static final int NUM_OF_LEVELS = 1;
     
     private Tile[] tiles;
     private List<Entity> entities;
@@ -37,15 +38,15 @@ public class Level {
     }
 	
 	public Level(Player player) {
-		switchLevel();
+		loadLevel();
     	camera = new Camera();
     	addPlayer(player);
 	}
 	
     @SuppressWarnings("unchecked")
-	public void switchLevel() {
-    	//this.width = Art.levels[currentLevel].width;
-    	//this.height = Art.levels[currentLevel].height;
+	public void loadLevel() {
+    	this.width = Bitmaps.levels[currentLevel].getWidth();
+    	this.height = Bitmaps.levels[currentLevel].getHeight();
     	entities = new ArrayList<Entity>();
         entityMap = new ArrayList[width * height];
         tiles = new Tile[width * height];
@@ -54,7 +55,7 @@ public class Level {
 			for(int y = 0; y < height; y++) {
                 entityMap[x + y * width] = new ArrayList<Entity>();
                 
-                int color = Bitmaps.level.pixels[x + y * width] & 0xFFFFFF;
+                int color = Bitmaps.levels[currentLevel].pixels[x + y * width] & 0xFFFFFF;
 				switch(color) {
 					case 0xFFFFFF: tiles[x + y * width] = new AirTile(); break;
 					case 0x808080: tiles[x + y * width] = new GroundTile(); break;
@@ -125,13 +126,15 @@ public class Level {
     }
     
     public void render(Screen screen) {
-    	for(int x = (int)(camera.getXO()) / Tile.size - 1; x < (int)(camera.getXO() + Main.WIDTH * Main.SCALE) / Tile.size + 1; x++) {
+    	//for(int x = (int)(camera.getXO()) / Tile.size - 1; x < (int)(camera.getXO() + Main.WIDTH * Main.SCALE) / Tile.size + 1; x++) {
+    	for(int x = 0; x < width; x++) {
     		if(x < 0 || x >= width) continue;
-        	for(int y = (int)(camera.getYO()) / Tile.size - 1; y < (int)(camera.getYO() + Main.HEIGHT * Main.SCALE) / Tile.size + 1; y++) {
-        		if(y < 0 || y >= height) continue;
-        		Tile tile = tiles[x + y * width];
-    			if(tile instanceof AirTile) continue;
-    			
+        	//for(int y = (int)(camera.getYO()) / Tile.size - 1; y < (int)(camera.getYO() + Main.HEIGHT * Main.SCALE) / Tile.size + 1; y++) {
+    		for(int y = 0; y < height; y++) {
+    			if(y < 0 || y >= height) continue;
+        		byte id = tiles[x + y * width].getID();
+    			if(id == 0) continue;
+    			screen.draw(Bitmaps.tiles[id - 1][0], (int) (x  - camera.getXO()), (int) (y - camera.getYO()));
         	}
     	}
     	
@@ -164,20 +167,27 @@ public class Level {
     
     public void nextLevel() {
     	currentLevel++;
-    	entities.clear();
-    	switchLevel();
+    	loadLevel();
     	addPlayer(player);
     	player.respawn();
     }
     
     public void resetLevel() {
     	entities.clear();
-    	switchLevel();
+    	loadLevel();
     	addPlayer(player);
     	player.respawn();
     }
     
     // Getters and Setters
+    public Camera getCamera() {
+    	return camera;
+    }
+    
+    public void setCamera(Camera camera) {
+    	this.camera = camera;
+    }
+    
     public int getXSpawn() {
     	return xSpawn;
     }
