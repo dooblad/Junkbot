@@ -8,7 +8,6 @@ import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
-import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.pickups.CleanerBot;
@@ -126,7 +125,8 @@ public class Level {
     }
     
     public void render(Screen screen) {
-    	//for(int x = (int)(camera.getXO()) / Tile.size - 1; x < (int)(camera.getXO() + Main.WIDTH * Main.SCALE) / Tile.size + 1; x++) {
+    	
+    	/*//for(int x = (int)(camera.getXO()) / Tile.size - 1; x < (int)(camera.getXO() + Main.WIDTH * Main.SCALE) / Tile.size + 1; x++) {
     	for(int x = 0; x < width; x++) {
     		if(x < 0 || x >= width) continue;
         	//for(int y = (int)(camera.getYO()) / Tile.size - 1; y < (int)(camera.getYO() + Main.HEIGHT * Main.SCALE) / Tile.size + 1; y++) {
@@ -134,8 +134,16 @@ public class Level {
     			if(y < 0 || y >= height) continue;
         		byte id = tiles[x + y * width].getID();
     			if(id == 0) continue;
-    			screen.draw(Bitmaps.tiles[id - 1][0], (int) (x  - camera.getXO()), (int) (y - camera.getYO()));
+    			screen.draw(Bitmaps.tiles[id - 1][0], (int) (x * Tile.size - camera.getXO()), (int) (y  - camera.getYO()));
         	}
+    	}*/
+    	
+    	for(int x = 0; x < this.width; x++) {
+    		for(int y = 0; y < this.height; y++) {
+    			byte id = tiles[x + y * this.width].getID();
+    			if(id == 0) continue;
+    			screen.draw(Bitmaps.tiles[id -1][0], (int) (x * Tile.size - camera.getXO()), (int) (y * Tile.size - camera.getYO()));
+    		}
     	}
     	
     	for(Entity entity: entities) {
@@ -167,13 +175,10 @@ public class Level {
     
     public void nextLevel() {
     	currentLevel++;
-    	loadLevel();
-    	addPlayer(player);
-    	player.respawn();
+    	resetLevel();
     }
     
     public void resetLevel() {
-    	entities.clear();
     	loadLevel();
     	addPlayer(player);
     	player.respawn();

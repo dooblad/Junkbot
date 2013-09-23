@@ -7,6 +7,7 @@ import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
 
 public class Camera {
+	private static final double ACCELERATION_FACTOR = 2.5;
 	private static final double DECELERATION_FACTOR = 0.7;
 	
 	private Entity entity;
@@ -23,19 +24,19 @@ public class Camera {
 	}
 	
 	public void tick(InputHandler input) {
-		/*if(input.isKeyPressed(KeyEvent.VK_Y))
-			locked = !locked;*/
+		if(input.isKeyPressed(KeyEvent.VK_Y))
+			locked = !locked;
 		
 		if(!locked) {
 			if(input.keys[KeyEvent.VK_UP])
-				ya--;
+				ya -= ACCELERATION_FACTOR;
 			else if(input.keys[KeyEvent.VK_DOWN])
-				ya++;
+				ya += ACCELERATION_FACTOR;
 			
 			if(input.keys[KeyEvent.VK_LEFT])
-				xa--;
+				xa -= ACCELERATION_FACTOR;
 			else if(input.keys[KeyEvent.VK_RIGHT])
-				xa++;
+				xa += ACCELERATION_FACTOR;
 			
 			xo += xa;
 			yo += ya;
