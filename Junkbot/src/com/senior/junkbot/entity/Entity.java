@@ -27,7 +27,7 @@ public class Entity {
     
     public Entity(int x, int y, Level level) {
     	this.x = x;
-    	this.x = x;
+    	this.y = y;
     	this.level = level;
     	this.onGround = false;
     	this.xa = 0;
@@ -44,10 +44,9 @@ public class Entity {
     	
     }
 
-    public boolean tryMove(BB bb) {
+    protected boolean tryMove(BB bb) {
     	boolean collided = false;
     	onGround = false;
-    	double epsilon = 0.01;
     	
         if(level.isFree(this, bb, xa, 0)) {
         	x += xa;
@@ -55,10 +54,10 @@ public class Entity {
         	collided = true;
     		int tileIn = (int)(x / Tile.size);
         	if(xa > 0) {
-        		x = (tileIn + Math.ceil((double) this.w / Tile.size)) * Tile.size - w - epsilon;
+        		x = (tileIn + Math.ceil((double) this.w / Tile.size)) * Tile.size - w;
         		xa = 0;
         	} else {
-        		x = tileIn * Tile.size + epsilon;
+        		x = tileIn * Tile.size;
         		xa = 0;
         	}
         	if(level.isFree(this, bb, xa, 0)) {
@@ -73,10 +72,10 @@ public class Entity {
         	int tileIn = (int)(y / Tile.size);
         	if(ya > 0) {
         		onGround = true;
-        		y = (tileIn + Math.ceil((double) this.h / Tile.size)) * Tile.size - h - epsilon;
+        		y = (tileIn + Math.ceil((double) this.h / Tile.size)) * Tile.size - h;
         		ya = 0;
         	} else {
-        		y = tileIn* Tile.size + epsilon;
+        		y = tileIn* Tile.size;
         		ya = 0;
         	}
         	if(level.isFree(this, bb, 0, ya)) {

@@ -71,6 +71,8 @@ public class Level {
     	this.player = player;
     	camera.addEntity(player);
     	add(player);
+    	player.setX(xSpawn);
+    	player.setY(ySpawn);
     }
 
     public void add(Entity e) {

@@ -1,5 +1,8 @@
 package com.senior.junkbot;
 
+import java.awt.event.KeyEvent;
+
+import sound.Sounds;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.Game2D;
@@ -30,8 +33,10 @@ public class Main extends GameLoop{
 		game.setVSync(VSYNC);
 		
 		Bitmaps.init(game.getBitmapLoader());
+		Sounds.init();
 		Tile.init();
-		player = new Player(30, 30);
+		
+		player = new Player(0, 0);
 		level = new Level(player);
 		
 		game.start();
@@ -39,6 +44,8 @@ public class Main extends GameLoop{
 	
 	public void tick(InputHandler input, boolean paused) {
 		level.tick(input);
+		if(input.isKeyPressed(KeyEvent.VK_F))
+			Sounds.test.togglePlay();
 	}
 	
 	public void render(Screen screen, boolean paused) {
@@ -56,6 +63,7 @@ public class Main extends GameLoop{
 	}
 	
 	public void exit() {
+		Sounds.destroy();
 		System.exit(0);
 	}
 	
