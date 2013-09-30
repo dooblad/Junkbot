@@ -44,8 +44,8 @@ public class Camera {
 			xa *= DECELERATION_FACTOR;
 			ya *= DECELERATION_FACTOR;
 		} else {
-			xo = entity.getX() - (Main.WIDTH + entity.getW()) / 2;
-			yo = entity.getY() - (Main.HEIGHT + entity.getH()) / 2;
+			xo = entity.getX() - (Main.WIDTH + entity.getWidth()) / 2;
+			yo = entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2;
 		}
 	}
 	

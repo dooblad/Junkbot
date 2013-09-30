@@ -6,8 +6,11 @@ import java.util.List;
 
 import bitmaps.Bitmaps;
 
+import collidables.Collidables;
+
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
+import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.pickups.CleanerBot;
@@ -19,7 +22,7 @@ import com.senior.junkbot.util.BB;
 import com.senior.junkbot.util.Camera;
 
 public class Level {
-    public static final double GRAVITY = 0.2;
+    public static final double GRAVITY = 1.0;
     public static final int NUM_OF_LEVELS = 1;
     
     private Tile[] tiles;
@@ -29,6 +32,8 @@ public class Level {
     private Camera camera;
     private Player player;
     private int xSpawn, ySpawn;
+    
+    public BB[] collidables;
     
     public static int currentLevel = 0;
     
@@ -49,6 +54,8 @@ public class Level {
     	entities = new ArrayList<Entity>();
         entityMap = new ArrayList[width * height];
         tiles = new Tile[width * height];
+        
+        collidables = Collidables.loadCollidables("level" + currentLevel + ".txt");
 
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
@@ -79,18 +86,24 @@ public class Level {
         entities.add(e);
         e.setLevel(this);
 
-        e.xSlot = (int) ((e.x + e.w / 2.0) / Tile.size);
-        e.ySlot = (int) ((e.y + e.h / 2.0) / Tile.size);
-        if (e.xSlot >= 0 && e.ySlot >= 0 && e.xSlot < width && e.ySlot < height) {
-            entityMap[e.xSlot + e.ySlot * width].add(e);
+        e.setXSlot((int) ((e.getX() + e.getWidth() / 2.0) / Tile.size));
+        e.setYSlot((int) ((e.getY() + e.getHeight() / 2.0) / Tile.size));
+        if (e.getXSlot() >= 0 && e.getYSlot() >= 0 && e.getXSlot() < width && e.getYSlot() < height) {
+            entityMap[e.getXSlot() + e.getYSlot() * width].add(e);
         }
     }
 
     public void tick(InputHandler input) {
-    	if(input.keys[KeyEvent.VK_R]) {
+    	if(input.isKeyPressed(KeyEvent.VK_R)) {
     		resetLevel();
     	}
     	
+    	if(input.isLeftMousePressed()) {
+    		int mouseX = (int) (input.getMouseX() / Main.SCALE + camera.getXO());
+    		int mouseY = (int) (input.getMouseY() / Main.SCALE + camera.getYO());
+    		System.out.println(mouseX + " " + mouseY);
+    	}
+    		
     	for(int i = 0; i < entities.size(); i++) {
     		Entity entity = entities.get(i);
     		if(entity instanceof Player) ((Player)entity).tick(input);
@@ -100,23 +113,23 @@ public class Level {
     	
 		for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
-            int xSlotOld = e.xSlot;
-            int ySlotOld = e.ySlot;
-            e.xSlot = (int) ((e.x + e.w / 2.0) / Tile.size);
-            e.ySlot = (int) ((e.y + e.h / 2.0) / Tile.size);
-            if (e.removed) {
+            int xSlotOld = e.getXSlot();
+            int ySlotOld = e.getYSlot();
+            e.setXSlot((int) ((e.getX() + e.getWidth() / 2.0) / Tile.size));
+            e.setYSlot((int) ((e.getY() + e.getHeight() / 2.0) / Tile.size));
+            if (e.isRemoved()) {
                 if (xSlotOld >= 0 && ySlotOld >= 0 && xSlotOld < width && ySlotOld < height) {
                     entityMap[xSlotOld + ySlotOld * width].remove(e);
                 }
                 if(!(entities.get(i) instanceof Player)) 
                 	entities.remove(i--);
             } else {
-                if (e.xSlot != xSlotOld || e.ySlot != ySlotOld) {
+                if (e.getXSlot() != xSlotOld || e.getYSlot() != ySlotOld) {
                     if (xSlotOld >= 0 && ySlotOld >= 0 && xSlotOld < width && ySlotOld < height) {
                         entityMap[xSlotOld + ySlotOld * width].remove(e);
                     }
-                    if (e.xSlot >= 0 && e.ySlot >= 0 && e.xSlot < width && e.ySlot < height) {
-                        entityMap[e.xSlot + e.ySlot * width].add(e);
+                    if (e.getXSlot() >= 0 && e.getYSlot() >= 0 && e.getXSlot() < width && e.getYSlot() < height) {
+                        entityMap[e.getXSlot() + e.getYSlot() * width].add(e);
                     } else {
                         e.outOfBounds();
                     }
@@ -140,6 +153,7 @@ public class Level {
         	}
     	}*/
     	
+    	// Render tiles
     	for(int x = 0; x < this.width; x++) {
     		for(int y = 0; y < this.height; y++) {
     			byte id = tiles[x + y * this.width].getID();
@@ -148,12 +162,23 @@ public class Level {
     		}
     	}
     	
+    	// Render collidables
+    	for(BB bb : collidables) {
+    		int x = (int) (bb.getX() - camera.getXO());
+    		int y = (int) (bb.getY() - camera.getYO());
+    		screen.drawPoint(0xFFFFFF00, x, y);
+    		screen.drawPoint(0xFFFFFF00, x + bb.getWidth(), y);
+    		screen.drawPoint(0xFFFFFF00, x + bb.getWidth(), y + bb.getHeight());
+    		screen.drawPoint(0xFFFFFF00, x, y + bb.getHeight());
+    	}
+    	
+    	// Render entities
     	for(Entity entity: entities) {
 			if(entity instanceof Player) ((Player)entity).render(screen);
 		}
     }
     
-    public boolean isFree(Entity e, BB bb, double xa, double ya) {
+    /*public boolean isFree(Entity e, BB bb, double xa, double ya) {
     	
     	int x0 = (int)((e.getX()) / Tile.size);
     	int y0 = (int)((e.getY()) / Tile.size);
@@ -173,7 +198,7 @@ public class Level {
     	}
     	
     	return isFree;
-    }
+    }*/
     
     public void nextLevel() {
     	currentLevel++;
@@ -199,15 +224,15 @@ public class Level {
     	return xSpawn;
     }
     
-    public void setXSpawn() {
-    	
+    public void setXSpawn(int x) {
+    	this.xSpawn = x;
     }
     
     public int getYSpawn() {
     	return ySpawn;
     }
     
-    public void setYSpawn() {
-    	
+    public void setYSpawn(int y) {
+    	this.ySpawn = y;
     }
 }

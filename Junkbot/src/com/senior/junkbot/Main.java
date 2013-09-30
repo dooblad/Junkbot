@@ -9,6 +9,7 @@ import com.doobs.java2d.Game2D;
 import com.doobs.java2d.GameLoop;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
+import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.tile.Tile;
@@ -35,6 +36,7 @@ public class Main extends GameLoop{
 		Bitmaps.init(game.getBitmapLoader());
 		Sounds.init();
 		Tile.init();
+		Entity.init();
 		
 		player = new Player(0, 0);
 		level = new Level(player);

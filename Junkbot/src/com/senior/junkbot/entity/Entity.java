@@ -1,5 +1,7 @@
 package com.senior.junkbot.entity;
 
+import bitmaps.Bitmaps;
+
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
@@ -7,15 +9,15 @@ import com.senior.junkbot.tile.Tile;
 import com.senior.junkbot.util.BB;
 
 public class Entity {
-    public boolean onGround;
+    protected boolean onGround;
 
-    public double xa, ya;
-    public double x, y;
-    public int w, h;
+    protected double xa, ya;
+    protected double x, y;
+    protected int width, height;
     
-    public Level level;
-    public boolean removed;
-    public int xSlot, ySlot;
+    protected Level level;
+    protected boolean removed;
+    protected int xSlot, ySlot;
     
     public Entity() {
     	this(0, 0, null);
@@ -32,9 +34,14 @@ public class Entity {
     	this.onGround = false;
     	this.xa = 0;
     	this.ya = 0;
-    	this.w = -1;
-    	this.h = -1;
+    	this.width = 0;
+    	this.height = 0;
     	this.removed = false;
+    }
+    
+    public static void init() {
+    	Player.width = Bitmaps.player.getWidth();
+    	Player.height = Bitmaps.player.getHeight();
     }
     
     public void tick(InputHandler input) {
@@ -43,8 +50,28 @@ public class Entity {
     public void render(Screen screen) {
     	
     }
+    
+    protected boolean tryMove(int width, int height) {
+    	boolean collided = false;
+    	onGround = false;
+    	
+    	for(BB bb : level.collidables) {
+    		if(bb.intersects(this.x + this.xa, this.y, width, height))
+    			this.xa = 0;
+    		if(bb.intersects(this.x, this.y + this.ya, width, height)) {
+    			if(this.ya > 0)
+    				onGround = true;
+    			this.ya = 0;
+    		}
+    	}
+    	
+    	this.x += this.xa;
+    	this.y += this.ya;
+    	
+    	return collided;
+    }
 
-    protected boolean tryMove(BB bb) {
+    /*protected boolean tryMove(BB bb) {
     	boolean collided = false;
     	onGround = false;
     	
@@ -84,11 +111,7 @@ public class Entity {
         }
         
         return collided;
-    }
-
-    protected void hitWall(double xa, double ya) {
-    	
-    }
+    }*/
     
     public void remove() {
         removed = true;
@@ -141,20 +164,20 @@ public class Entity {
 		this.y = y;
 	}
 
-	public int getW() {
-		return w;
+	public int getWidth() {
+		return width;
 	}
 
-	public void setW(int w) {
-		this.w = w;
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
-	public int getH() {
-		return h;
+	public int getHeight() {
+		return height;
 	}
 
-	public void setH(int h) {
-		this.h = h;
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	public Level getLevel() {
@@ -173,19 +196,19 @@ public class Entity {
 		this.removed = removed;
 	}
 
-	public int getxSlot() {
+	public int getXSlot() {
 		return xSlot;
 	}
 
-	public void setxSlot(int xSlot) {
+	public void setXSlot(int xSlot) {
 		this.xSlot = xSlot;
 	}
 
-	public int getySlot() {
+	public int getYSlot() {
 		return ySlot;
 	}
 
-	public void setySlot(int ySlot) {
+	public void setYSlot(int ySlot) {
 		this.ySlot = ySlot;
 	}
 }

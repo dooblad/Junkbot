@@ -10,55 +10,59 @@ import com.senior.junkbot.level.Level;
 import com.senior.junkbot.util.BB;
 
 public class Player extends Entity {
-	public static final BB bb = new BB(16, 32);
 	private static final double DECELERATION = 0.7;
+	private static final double JUMP = 17.0;
+	
+	public static int width, height;
 	
 	//ZZZZZZZZZZZZZZZZz
 	private boolean colliding;
 	//ZZZZZZZZZZZZZZZZz
 	
 	public Player() {
-		super(0, 0);
-		colliding = false;
+		this(0, 0, null);
 	}
 	
 	public Player(int x, int y) {
-		super(x, y, null);
-		colliding = false;
+		this(x, y, null);
 	}
 	
 	public Player(int x, int y, Level level) {
 		super(x, y, level);
-		colliding = false;
+		super.width = Player.width;
+		super.height = Player.height;
+		colliding = true;
 	}
 	
 	public void tick(InputHandler input) {
 		if(input.keys[KeyEvent.VK_A]) {
-			xa--;
+			this.xa--;
 		} else if(input.keys[KeyEvent.VK_D]) {
-			xa++;
+			this.xa++;
 		}
 		
-		if(input.keys[KeyEvent.VK_W]) {
-			ya--;
+		if(input.keys[KeyEvent.VK_W] && onGround) {
+			this.ya -= JUMP;
 		} else if(input.keys[KeyEvent.VK_S]) {
-			ya++;
+			this.ya++;
 		}
+		
+		this.ya += Level.GRAVITY;
 		
 		//ZZZZZZZZZZZZZZZZZZ
 		if(input.isKeyPressed(KeyEvent.VK_V))
 			colliding = !colliding;
 		
 		if(colliding) {
-			tryMove(Player.bb);
+			tryMove(width, height);
 		} else {
 			this.x += this.xa;
 			this.y += this.ya;
 		}
 		//ZZZZZZZZZZZZZZZZZZ
 		
+		
 		this.xa *= DECELERATION;
-		this.ya *= DECELERATION;
 	}
 	
 	public void render(Screen screen) {
@@ -66,10 +70,10 @@ public class Player extends Entity {
 	}
 	
 	public void respawn() {
-		xa = 0;
-		ya = 0;
-		x = level.getXSpawn();
-		y = level.getYSpawn();
+		this.xa = 0;
+		this.ya = 0;
+		this.x = level.getXSpawn();
+		this.y = level.getYSpawn();
 	}
 	
 	// Getters and Setters
