@@ -15,15 +15,12 @@ public class GameState {
 		
 	}
 	
-	public void tickPaused(InputHandler input) {
-		
-	}
-	
 	public void render(Screen screen) {
 		
 	}
 	
-	public void renderPaused(Screen screen) {
-		
+	// Getters and Setters
+	public Main getMain() {
+		return main;
 	}
 }

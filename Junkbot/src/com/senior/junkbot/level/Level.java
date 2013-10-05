@@ -166,10 +166,11 @@ public class Level {
     	for(BB bb : collidables) {
     		int x = (int) (bb.getX() - camera.getXO());
     		int y = (int) (bb.getY() - camera.getYO());
-    		screen.drawPoint(0xFFFFFF00, x, y);
+    		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
+    		/*screen.drawPoint(0xFFFFFF00, x, y);
     		screen.drawPoint(0xFFFFFF00, x + bb.getWidth(), y);
     		screen.drawPoint(0xFFFFFF00, x + bb.getWidth(), y + bb.getHeight());
-    		screen.drawPoint(0xFFFFFF00, x, y + bb.getHeight());
+    		screen.drawPoint(0xFFFFFF00, x, y + bb.getHeight());*/
     	}
     	
     	// Render entities

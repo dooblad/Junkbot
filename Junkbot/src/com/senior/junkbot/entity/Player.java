@@ -7,17 +7,15 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
-import com.senior.junkbot.util.BB;
 
 public class Player extends Entity {
 	private static final double DECELERATION = 0.7;
 	private static final double JUMP = 17.0;
+	private static final double START_MASS = 2.5;
 	
 	public static int width, height;
 	
-	//ZZZZZZZZZZZZZZZZz
-	private boolean colliding;
-	//ZZZZZZZZZZZZZZZZz
+	private double mass;
 	
 	public Player() {
 		this(0, 0, null);
@@ -31,7 +29,7 @@ public class Player extends Entity {
 		super(x, y, level);
 		super.width = Player.width;
 		super.height = Player.height;
-		colliding = true;
+		mass = START_MASS;
 	}
 	
 	public void tick(InputHandler input) {
@@ -47,20 +45,15 @@ public class Player extends Entity {
 			this.ya++;
 		}
 		
-		this.ya += Level.GRAVITY;
+		if(input.isKeyPressed(KeyEvent.VK_T))
+			mass += 0.1;
 		
-		//ZZZZZZZZZZZZZZZZZZ
-		if(input.isKeyPressed(KeyEvent.VK_V))
-			colliding = !colliding;
+		if(input.isKeyPressed(KeyEvent.VK_G))
+			mass -= 0.1;
 		
-		if(colliding) {
-			tryMove(width, height);
-		} else {
-			this.x += this.xa;
-			this.y += this.ya;
-		}
-		//ZZZZZZZZZZZZZZZZZZ
+		this.ya += Level.GRAVITY * mass;
 		
+		tryMove(width, height);
 		
 		this.xa *= DECELERATION;
 	}
@@ -77,4 +70,11 @@ public class Player extends Entity {
 	}
 	
 	// Getters and Setters
+	public double getMass() {
+		return mass;
+	}
+	
+	public void setMass(double mass) {
+		this.mass = mass;
+	}
 }

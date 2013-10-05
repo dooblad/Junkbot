@@ -11,11 +11,15 @@ import com.senior.junkbot.level.Level;
 
 public class Bitmaps {
 	public static Bitmap player;
+	public static Bitmap mainMenu;
 	public static Bitmap[][] tiles;
 	public static Bitmap[] levels;
 	
 	public static void init(BitmapLoader loader) {
 		player = loader.loadBitmap(getImage("player.png"));
+		
+		mainMenu = loader.loadBitmap(getImage("mainMenu.png"));
+		
 		tiles = loader.loadTileSheet(getImage("tiles.png"), 1, 1);
 		
 		levels = new Bitmap[Level.NUM_OF_LEVELS];

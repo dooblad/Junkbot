@@ -1,7 +1,6 @@
 package collidables;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -30,10 +29,6 @@ public class Collidables {
 			for(int i = 0; i < temp.size(); i++) {
 				bbs[i] = temp.get(i); 
 			}
-			
-			//BB tempy = bbs[0];
-			//System.out.println(tempy.getX() + " " + tempy.getY() + " " + tempy.getWidth() + " " + tempy.getHeight());
-
 			
 			return bbs;
 		} catch(IOException e) {

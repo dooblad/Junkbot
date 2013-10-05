@@ -24,8 +24,11 @@ public class Camera {
 	}
 	
 	public void tick(InputHandler input) {
-		if(input.isKeyPressed(KeyEvent.VK_Y))
+		if(input.isKeyPressed(KeyEvent.VK_Y)) {
 			locked = !locked;
+			xa = 0;
+			ya = 0;
+		}
 		
 		if(!locked) {
 			if(input.keys[KeyEvent.VK_UP])
@@ -44,8 +47,18 @@ public class Camera {
 			xa *= DECELERATION_FACTOR;
 			ya *= DECELERATION_FACTOR;
 		} else {
-			xo = entity.getX() - (Main.WIDTH + entity.getWidth()) / 2;
-			yo = entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2;
+			//xo = entity.getX() - (Main.WIDTH + entity.getWidth()) / 2;
+			//yo = entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2;
+			if(xa > 1.0 || xa < -1.0)
+				xa += entity.getXA() * entity.getXA() * entity.getXA();
+			else
+				xa -= 1;
+			
+			int limit = Main.WIDTH / 4;
+			if(xa > limit + entity.getWidth() * 1.5) xa = limit + entity.getWidth() * 1.5;
+			if(xa < -(limit)) xa = -(limit);
+			xo = (entity.getX() - (Main.WIDTH + entity.getWidth()) / 2) + xa;
+			yo = (entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2);
 		}
 	}
 	

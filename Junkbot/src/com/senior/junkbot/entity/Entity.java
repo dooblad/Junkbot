@@ -5,7 +5,6 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
-import com.senior.junkbot.tile.Tile;
 import com.senior.junkbot.util.BB;
 
 public class Entity {
@@ -56,11 +55,22 @@ public class Entity {
     	onGround = false;
     	
     	for(BB bb : level.collidables) {
-    		if(bb.intersects(this.x + this.xa, this.y, width, height))
+    		if(bb.intersects(this.x + this.xa, this.y, width, height)) {
+    			if(this.xa > 0) {
+    				this.x = bb.getX() - this.width;
+    			} else if(this.xa < 0) {
+    				this.x = bb.getX() + bb.getWidth();
+    			}
     			this.xa = 0;
+    		}
+    		
     		if(bb.intersects(this.x, this.y + this.ya, width, height)) {
-    			if(this.ya > 0)
+    			if(this.ya > 0) {
+    				this.y = bb.getY() - this.height;
     				onGround = true;
+    			} else if(this.ya < 0) {
+    				this.y = bb.getY() + bb.getWidth();
+    			}
     			this.ya = 0;
     		}
     	}
