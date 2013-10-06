@@ -22,7 +22,7 @@ import com.senior.junkbot.util.BB;
 import com.senior.junkbot.util.Camera;
 
 public class Level {
-    public static final double GRAVITY = 1.0;
+    public static final double GRAVITY = 0.2;
     public static final int NUM_OF_LEVELS = 1;
     
     private Tile[] tiles;
@@ -141,8 +141,10 @@ public class Level {
     
     public void render(Screen screen) {
     	// Render tiles
-    	for(int x = 0; x < this.width; x++) {
-    		for(int y = 0; y < this.height; y++) {
+    	for(int x = (int) camera.getXO() / Tile.size; x < (camera.getXO() + Main.WIDTH) / Tile.size; x++) {
+    		if(x < 0 || x >= this.width) continue;
+    		for(int y = (int) camera.getYO() / Tile.size; y < (camera.getYO() + Main.HEIGHT) / Tile.size; y++) {
+    			if(y < 0 || y >= this.height) continue;
     			byte id = tiles[x + y * this.width].getID();
     			if(id == 0) continue;
     			screen.draw(Bitmaps.tiles[id -1][0], (int) (x * Tile.size - camera.getXO()), (int) (y * Tile.size - camera.getYO()));

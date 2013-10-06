@@ -14,18 +14,29 @@ public class Bitmaps {
 	public static Bitmap mainMenu;
 	public static Bitmap[][] tiles;
 	public static Bitmap[] levels;
+	public static Bitmap[][] sign;
 	
 	public static void init(BitmapLoader loader) {
-		player = loader.loadBitmap(getImage("player.png"));
+		player = loadBitmap(loader, "player.png");
 		
-		mainMenu = loader.loadBitmap(getImage("mainMenu.png"));
+		mainMenu = loadBitmap(loader, "mainMenu.png");
 		
-		tiles = loader.loadTileSheet(getImage("tiles.png"), 1, 1);
+		tiles = loadTileSheet(loader, ("tiles.png"), 1, 1);
 		
 		levels = new Bitmap[Level.NUM_OF_LEVELS];
 		for(int i = 0; i < Level.NUM_OF_LEVELS; i++) {
-			levels[i] = loader.loadBitmap(getImage("level" + i + ".png"));
+			levels[i] = loadBitmap(loader, "levels/level" + i + ".png");
 		}
+		
+		sign = loadTileSheet(loader, "scenery/sign.png", 3, 1);
+	}
+	
+	private static Bitmap loadBitmap(BitmapLoader loader, String URL) {
+		return loader.loadBitmap(getImage(URL));
+	}
+	
+	private static Bitmap[][] loadTileSheet(BitmapLoader loader, String URL, int tilesX, int tilesY) {
+		return loader.loadTileSheet(getImage(URL), tilesX, tilesY);
 	}
 	
 	private static BufferedImage getImage(String URL) {

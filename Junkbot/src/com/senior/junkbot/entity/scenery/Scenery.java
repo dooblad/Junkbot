@@ -1,7 +1,8 @@
-package com.senior.junkbot.entity;
+package com.senior.junkbot.entity.scenery;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
+import com.senior.junkbot.entity.Entity;
 
 public class Scenery extends Entity{
 	

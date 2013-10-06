@@ -14,7 +14,7 @@ public class Player extends Entity {
 	//ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 	private static final double ACCELERATION = 1.0;
 	private static final double DECELERATION = 0.7;
-	private static final double JUMP = 17.0;
+	private static final double JUMP = 7.0;
 	private static final double START_MASS = 2.5;
 	
 	public static int width, height;
