@@ -55,8 +55,6 @@ public class Level {
         entityMap = new ArrayList[width * height];
         tiles = new Tile[width * height];
         
-        collidables = Collidables.loadCollidables("level" + currentLevel + ".txt");
-
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
                 entityMap[x + y * width] = new ArrayList<Entity>();
@@ -72,6 +70,8 @@ public class Level {
 				}
 			}
 		}
+		
+		collidables = Collidables.calculateCollidables(this);
 	}
     
     public void addPlayer(Player player) {
@@ -140,19 +140,6 @@ public class Level {
     }
     
     public void render(Screen screen) {
-    	
-    	/*//for(int x = (int)(camera.getXO()) / Tile.size - 1; x < (int)(camera.getXO() + Main.WIDTH * Main.SCALE) / Tile.size + 1; x++) {
-    	for(int x = 0; x < width; x++) {
-    		if(x < 0 || x >= width) continue;
-        	//for(int y = (int)(camera.getYO()) / Tile.size - 1; y < (int)(camera.getYO() + Main.HEIGHT * Main.SCALE) / Tile.size + 1; y++) {
-    		for(int y = 0; y < height; y++) {
-    			if(y < 0 || y >= height) continue;
-        		byte id = tiles[x + y * width].getID();
-    			if(id == 0) continue;
-    			screen.draw(Bitmaps.tiles[id - 1][0], (int) (x * Tile.size - camera.getXO()), (int) (y  - camera.getYO()));
-        	}
-    	}*/
-    	
     	// Render tiles
     	for(int x = 0; x < this.width; x++) {
     		for(int y = 0; y < this.height; y++) {
@@ -167,10 +154,6 @@ public class Level {
     		int x = (int) (bb.getX() - camera.getXO());
     		int y = (int) (bb.getY() - camera.getYO());
     		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
-    		/*screen.drawPoint(0xFFFFFF00, x, y);
-    		screen.drawPoint(0xFFFFFF00, x + bb.getWidth(), y);
-    		screen.drawPoint(0xFFFFFF00, x + bb.getWidth(), y + bb.getHeight());
-    		screen.drawPoint(0xFFFFFF00, x, y + bb.getHeight());*/
     	}
     	
     	// Render entities
@@ -178,28 +161,6 @@ public class Level {
 			if(entity instanceof Player) ((Player)entity).render(screen);
 		}
     }
-    
-    /*public boolean isFree(Entity e, BB bb, double xa, double ya) {
-    	
-    	int x0 = (int)((e.getX()) / Tile.size);
-    	int y0 = (int)((e.getY()) / Tile.size);
-    	int x1 = (int)((e.getX() + bb.getW()) / Tile.size);
-    	int y1 = (int)((e.getY() + bb.getH()) / Tile.size);
-    	
-    	boolean isFree = true;
-    	for(int x = x0 - 1; x < x1 + 1; x++) {
-    		if(x < 0 || x >= this.width) continue;
-    		for(int y = y0 - 1; y < y1 + 1; y++) {
-    			if(y < 0 || y >= this.height) continue;
-    			//if(tiles[x + y * this.width].isSolid() && temp.intersects(x * Tile.size, y * Tile.size, (x + 1) * Tile.size, (y + 1) * Tile.size)) 
-    			if(tiles[x + y * this.width].isSolid() && bb.intersects((int) e.getX(), (int) e.getY(), x * Tile.size, y * Tile.size, Tile.size, Tile.size))
-    				isFree = false;
-    			else ;
-    		}
-    	}
-    	
-    	return isFree;
-    }*/
     
     public void nextLevel() {
     	currentLevel++;
@@ -213,6 +174,26 @@ public class Level {
     }
     
     // Getters and Setters
+    public Tile getTile(int x, int y) {
+    	return tiles[x + y * width];
+    }
+    
+    public int getWidth() {
+    	return width;
+    }
+    
+    public void setWidth(int width) {
+    	this.width = width;
+    }
+    
+    public int getHeight() {
+    	return height;
+    }
+
+    public void setHeight(int height) {
+    	this.height = height;
+    }
+    
     public Camera getCamera() {
     	return camera;
     }

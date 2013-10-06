@@ -15,12 +15,15 @@ public class Camera {
 	private double xa, ya;
 	private boolean locked;
 	
+	private int movingCounter;
+	
 	public Camera() {
 		xo = 0;
 		yo = 0;
 		xa = 0;
 		ya = 0;
 		locked = true;
+		movingCounter = 0;
 	}
 	
 	public void tick(InputHandler input) {
@@ -47,18 +50,30 @@ public class Camera {
 			xa *= DECELERATION_FACTOR;
 			ya *= DECELERATION_FACTOR;
 		} else {
-			//xo = entity.getX() - (Main.WIDTH + entity.getWidth()) / 2;
-			//yo = entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2;
-			if(xa > 1.0 || xa < -1.0)
-				xa += entity.getXA() * entity.getXA() * entity.getXA();
-			else
-				xa -= 1;
+			if(entity.getXA() > 0.01 || entity.getXA() < -0.01) {
+				if(++movingCounter > 60)
+				this.xa += entity.getXA() * entity.getXA() * entity.getXA();
+			} else {
+				boolean still = false;
+				if(entity.getXA() < 0) {
+					this.xa *= 0.7;
+					still = true;
+				}
+				else if(entity.getXA() > 0) {
+					this.xa *= 0.7;
+					still = true;
+				}
+				if(still)
+					movingCounter = 0;
+			}
 			
 			int limit = Main.WIDTH / 4;
-			if(xa > limit + entity.getWidth() * 1.5) xa = limit + entity.getWidth() * 1.5;
-			if(xa < -(limit)) xa = -(limit);
-			xo = (entity.getX() - (Main.WIDTH + entity.getWidth()) / 2) + xa;
-			yo = (entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2);
+			if(this.xa > limit + entity.getWidth() * 1.5) 
+				this.xa = limit + entity.getWidth() * 1.5;
+			if(this.xa < -(limit)) 
+				this.xa = -(limit);
+			this.xo = (entity.getX() - (Main.WIDTH + entity.getWidth()) / 2) + this.xa;
+			this.yo = (entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2);
 		}
 	}
 	

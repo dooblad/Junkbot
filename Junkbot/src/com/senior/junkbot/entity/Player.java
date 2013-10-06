@@ -9,6 +9,10 @@ import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
 
 public class Player extends Entity {
+	//ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+	//FIX CAMERA SHIT AND HOW PLAYER ACCELERATION INTERACTS WITH IT
+	//ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+	private static final double ACCELERATION = 1.0;
 	private static final double DECELERATION = 0.7;
 	private static final double JUMP = 17.0;
 	private static final double START_MASS = 2.5;
@@ -34,15 +38,13 @@ public class Player extends Entity {
 	
 	public void tick(InputHandler input) {
 		if(input.keys[KeyEvent.VK_A]) {
-			this.xa--;
+			this.xa -= ACCELERATION;
 		} else if(input.keys[KeyEvent.VK_D]) {
-			this.xa++;
+			this.xa += ACCELERATION;
 		}
 		
 		if(input.keys[KeyEvent.VK_W] && onGround) {
 			this.ya -= JUMP;
-		} else if(input.keys[KeyEvent.VK_S]) {
-			this.ya++;
 		}
 		
 		if(input.isKeyPressed(KeyEvent.VK_T))
