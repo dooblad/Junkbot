@@ -7,17 +7,13 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
+import com.senior.junkbot.tile.Tile;
 
 public class Player extends Entity {
-	//ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
-	//FIX CAMERA SHIT AND HOW PLAYER ACCELERATION INTERACTS WITH IT
-	//ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 	private static final double ACCELERATION = 1.0;
 	private static final double DECELERATION = 0.7;
 	private static final double JUMP = 7.0;
 	private static final double START_MASS = 2.5;
-	
-	public static int width, height;
 	
 	private double mass;
 	
@@ -31,9 +27,9 @@ public class Player extends Entity {
 	
 	public Player(int x, int y, Level level) {
 		super(x, y, level);
-		super.width = Player.width;
-		super.height = Player.height;
-		mass = START_MASS;
+		this.width = Bitmaps.player.getWidth();
+		this.height = Bitmaps.player.getHeight();
+		this.mass = START_MASS;
 	}
 	
 	public void tick(InputHandler input) {
@@ -55,13 +51,28 @@ public class Player extends Entity {
 		
 		this.ya += Level.GRAVITY * mass;
 		
+		onGround = false;
+		
+		int distanceCheck = 3;
+		for(int x = (int)(this.x / Tile.size - distanceCheck); x < (int) ((this.x + this.width) / Tile.size + distanceCheck); x++) {
+			if(x < 0 || x >= level.getWidth()) continue;
+			for(int y = (int)(this.y) / Tile.size - distanceCheck; y < (int)(this.y + this.width) / Tile.size + distanceCheck; y++) {
+				if(y < 0 || y >= level.getHeight()) continue;
+				for(Entity entity: level.getEntityMap()[x + y * level.getWidth()]) {
+					if(entity.isSolid() && !(entity instanceof Player)) {
+						tryCollideWithEntity(entity);
+					}
+				}
+			}
+		}
+		
 		tryMove(width, height);
 		
 		this.xa *= DECELERATION;
 	}
 	
 	public void render(Screen screen) {
-		screen.draw(Bitmaps.player, (int) (x - level.getCamera().getXO()), (int) (y - level.getCamera().getYO()));
+		screen.draw(Bitmaps.player, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
 	}
 	
 	public void respawn() {

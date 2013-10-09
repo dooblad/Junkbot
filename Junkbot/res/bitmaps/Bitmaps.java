@@ -11,13 +11,17 @@ import com.senior.junkbot.level.Level;
 
 public class Bitmaps {
 	public static Bitmap player;
+	public static Bitmap cleanerBot;
+	public static Bitmap winPipe;
 	public static Bitmap mainMenu;
 	public static Bitmap[][] tiles;
 	public static Bitmap[] levels;
 	public static Bitmap[][] sign;
 	
 	public static void init(BitmapLoader loader) {
-		player = loadBitmap(loader, "player.png");
+		player = loadBitmap(loader, "entities/player.png");
+		cleanerBot = loadBitmap(loader, "entities/cleanerBot.png");
+		winPipe = loadBitmap(loader, "entities/winPipe.png");
 		
 		mainMenu = loadBitmap(loader, "mainMenu.png");
 		

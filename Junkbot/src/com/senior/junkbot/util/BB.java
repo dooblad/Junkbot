@@ -19,6 +19,10 @@ public class BB {
 		this.height = height;
 	}
 	
+	public static boolean intersects(double x1, double width1, double y1, double height1, double x2, double width2, double y2, double height2) {
+		return !(x1 >= x2 + width2 || y1 >= y2 + height2 || x1 + width1 <= x2 || y1 + height1 <= y2);
+	}
+	
 	/**
 	 * @param x The x coordinate that supplements the width of this BB object.
 	 * @param y The y coordinate that supplements the height of this BB object.
@@ -27,9 +31,7 @@ public class BB {
 	 * @return if the two objects are intersecting
 	 */
 	public boolean intersects(double x, double y, int width, int height) {
-		//if (x0 >= this.x1 || y0 >= this.y1 || x1 <= this.x0 || y1 <= this.y0) return false;
-		if (x >= this.x + this.width || y >= this.y + this.height || x + width <= this.x || y + height <= this.y) return false;
-		return true;
+		return !(x >= this.x + this.width || y >= this.y + this.height || x + width <= this.x || y + height <= this.y);
 	}
 	
 	// Getters and Setters

@@ -1,7 +1,5 @@
 package com.senior.junkbot.entity;
 
-import bitmaps.Bitmaps;
-
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
@@ -17,6 +15,8 @@ public class Entity {
     protected Level level;
     protected boolean removed;
     protected int xSlot, ySlot;
+    
+    private boolean solid;
     
     public Entity() {
     	this(0, 0, null);
@@ -36,11 +36,7 @@ public class Entity {
     	this.width = 0;
     	this.height = 0;
     	this.removed = false;
-    }
-    
-    public static void init() {
-    	Player.width = Bitmaps.player.getWidth();
-    	Player.height = Bitmaps.player.getHeight();
+    	this.solid = true;
     }
     
     public void tick(InputHandler input) {
@@ -52,26 +48,27 @@ public class Entity {
     
     protected boolean tryMove(int width, int height) {
     	boolean collided = false;
-    	onGround = false;
     	
     	for(BB bb : level.collidables) {
     		if(bb.intersects(this.x + this.xa, this.y, width, height)) {
     			if(this.xa > 0) {
-    				this.x = bb.getX() - this.width;
+    				this.x = bb.getX() - width;
     			} else if(this.xa < 0) {
     				this.x = bb.getX() + bb.getWidth();
     			}
     			this.xa = 0;
+    			collided = true;
     		}
     		
     		if(bb.intersects(this.x, this.y + this.ya, width, height)) {
     			if(this.ya > 0) {
-    				this.y = bb.getY() - this.height;
+    				this.y = bb.getY() - height;
     				onGround = true;
     			} else if(this.ya < 0) {
     				this.y = bb.getY() + bb.getWidth();
     			}
     			this.ya = 0;
+    			collided = true;
     		}
     	}
     	
@@ -80,49 +77,34 @@ public class Entity {
     	
     	return collided;
     }
-
-    /*protected boolean tryMove(BB bb) {
-    	boolean collided = false;
-    	onGround = false;
-    	
-        if(level.isFree(this, bb, xa, 0)) {
-        	x += xa;
-        } else {
-        	collided = true;
-    		int tileIn = (int)(x / Tile.size);
-        	if(xa > 0) {
-        		x = (tileIn + Math.ceil((double) this.w / Tile.size)) * Tile.size - w;
-        		xa = 0;
-        	} else {
-        		x = tileIn * Tile.size;
-        		xa = 0;
-        	}
-        	if(level.isFree(this, bb, xa, 0)) {
-        		x += xa;
-        	}
-        }
-        
-        if(level.isFree(this, bb, 0, ya)) {
-        	y += ya;
-        } else {
-        	collided = true;
-        	int tileIn = (int)(y / Tile.size);
-        	if(ya > 0) {
-        		onGround = true;
-        		y = (tileIn + Math.ceil((double) this.h / Tile.size)) * Tile.size - h;
-        		ya = 0;
-        	} else {
-        		y = tileIn* Tile.size;
-        		ya = 0;
-        	}
-        	if(level.isFree(this, bb, 0, ya)) {
-        		y += ya;
-        	}
-        }
-        
-        return collided;
-    }*/
     
+    protected boolean tryCollideWithEntity(Entity entity) {
+    	boolean collided = false;
+    	
+    	if(BB.intersects(this.x, this.width, this.y + this.ya, this.height, entity.getX(), entity.getWidth(), entity.getY(), entity.getHeight())) {
+			if(this.ya > 0) {
+				this.y = entity.getY() - this.height;
+			} else if(this.ya < 0) {
+				this.y = entity.getY() + entity.getHeight();
+			}
+			this.ya = 0;
+			onGround = true;
+			collided = true;
+		} else if(BB.intersects(this.x + this.xa, this.width, this.y, this.height, entity.getX(), entity.getWidth(), entity.getY(), entity.getHeight())) {
+			if(this.xa > 0) {
+				this.x = entity.getX() - this.width;
+			} else if(this.xa < 0) {
+				this.x = entity.getX() + entity.getWidth();
+			}
+			this.xa = 0;
+			collided = true;
+		}
+		
+		
+
+    	return collided;
+    }
+
     public void remove() {
         removed = true;
     }
@@ -133,7 +115,6 @@ public class Entity {
     }
     
     // Getters and Setters
-
 	public boolean isOnGround() {
 		return onGround;
 	}
@@ -220,5 +201,13 @@ public class Entity {
 
 	public void setYSlot(int ySlot) {
 		this.ySlot = ySlot;
+	}
+	
+	public boolean isSolid() {
+		return solid;
+	}
+	
+	public void setSolid(boolean solid) {
+		this.solid = solid;
 	}
 }

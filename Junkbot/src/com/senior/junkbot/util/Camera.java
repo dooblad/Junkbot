@@ -52,20 +52,14 @@ public class Camera {
 		} else {
 			if(entity.getXA() > 0.01 || entity.getXA() < -0.01) {
 				if(++movingCounter > 60)
-				this.xa += entity.getXA() * entity.getXA() * entity.getXA();
+				this.xa += entity.getXA() * 0.5;
 			} else {
-				boolean still = false;
-				if(entity.getXA() < 0) {
-					this.xa *= 0.7;
-					still = true;
-				}
-				else if(entity.getXA() > 0) {
-					this.xa *= 0.7;
-					still = true;
-				}
-				if(still)
-					movingCounter = 0;
+				this.xa *= 0.7;
+				movingCounter = 0;
 			}
+			
+			if((entity.getXA() > 0 && this.xa < 0) || (entity.getXA() < 0 && this.xa > 0))
+				this.xa *= 0.5;
 			
 			int limit = Main.WIDTH / 4;
 			if(this.xa > limit + entity.getWidth() * 1.5) 

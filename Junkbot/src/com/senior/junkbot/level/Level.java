@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bitmaps.Bitmaps;
-
 import collidables.Collidables;
 
 import com.doobs.java2d.gfx.Screen;
@@ -13,7 +12,8 @@ import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
-import com.senior.junkbot.entity.pickups.CleanerBot;
+import com.senior.junkbot.entity.WinPipe;
+import com.senior.junkbot.entity.enemy.CleanerBot;
 import com.senior.junkbot.entity.pickups.JunkRemover;
 import com.senior.junkbot.tile.AirTile;
 import com.senior.junkbot.tile.GroundTile;
@@ -59,13 +59,16 @@ public class Level {
 			for(int y = 0; y < height; y++) {
                 entityMap[x + y * width] = new ArrayList<Entity>();
                 
+                int xx = x * Tile.size;
+                int yy = y * Tile.size;
                 int color = Bitmaps.levels[currentLevel].pixels[x + y * width] & 0xFFFFFF;
 				switch(color) {
 					case 0xFFFFFF: tiles[x + y * width] = new AirTile(); break;
 					case 0x808080: tiles[x + y * width] = new GroundTile(); break;
-					case 0x00FF00: tiles[x + y * width] = new AirTile(); xSpawn = x * Tile.size; ySpawn = y * Tile.size; break;
-					case 0x800000: tiles[x + y * width] = new AirTile(); add(new JunkRemover(x * Tile.size, y * Tile.size, this)); break;
-					case 0x400000: tiles[x + y * width] = new AirTile(); add(new CleanerBot(x * Tile.size, y * Tile.size, this)); break;
+					case 0x00FF00: tiles[x + y * width] = new AirTile(); xSpawn = xx; ySpawn = yy; break;
+					case 0xFF0000: tiles[x + y * width] = new AirTile(); add(new CleanerBot(xx, yy)); break;
+					case 0x0000FF: tiles[x + y * width] = new AirTile(); add(new WinPipe(xx, yy)); break;
+					case 0x800000: tiles[x + y * width] = new AirTile(); add(new JunkRemover(xx, yy, this)); break;
 					default: tiles[x + y * width] = new AirTile(); break;
 				}
 			}
@@ -106,7 +109,9 @@ public class Level {
     		
     	for(int i = 0; i < entities.size(); i++) {
     		Entity entity = entities.get(i);
-    		if(entity instanceof Player) ((Player)entity).tick(input);
+    		if(entity instanceof Player) ((Player) entity).tick(input);
+    		else if(entity instanceof CleanerBot) ((CleanerBot) entity).tick(input);
+    		else if(entity instanceof WinPipe) ((WinPipe) entity).tick(input);
     	}
     	
     	camera.tick(input);
@@ -160,7 +165,9 @@ public class Level {
     	
     	// Render entities
     	for(Entity entity: entities) {
-			if(entity instanceof Player) ((Player)entity).render(screen);
+			if(entity instanceof Player) ((Player) entity).render(screen);
+			else if(entity instanceof CleanerBot) ((CleanerBot) entity).render(screen);
+			else if(entity instanceof WinPipe) ((WinPipe) entity).render(screen);
 		}
     }
     
@@ -178,6 +185,10 @@ public class Level {
     // Getters and Setters
     public Tile getTile(int x, int y) {
     	return tiles[x + y * width];
+    }
+    
+    public List<Entity>[] getEntityMap() {
+    	return entityMap;
     }
     
     public int getWidth() {
