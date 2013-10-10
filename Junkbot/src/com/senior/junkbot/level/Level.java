@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bitmaps.Bitmaps;
-import collidables.Collidables;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
@@ -14,16 +13,18 @@ import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.WinPipe;
 import com.senior.junkbot.entity.enemy.CleanerBot;
-import com.senior.junkbot.entity.pickups.JunkRemover;
 import com.senior.junkbot.tile.AirTile;
 import com.senior.junkbot.tile.GroundTile;
 import com.senior.junkbot.tile.Tile;
 import com.senior.junkbot.util.BB;
 import com.senior.junkbot.util.Camera;
+import com.senior.junkbot.util.Collidables;
+
+import entities.EntityLoader;
 
 public class Level {
     public static final double GRAVITY = 0.2;
-    public static final int NUM_OF_LEVELS = 1;
+    public static final int NUM_OF_LEVELS = 7;
     
     private Tile[] tiles;
     private List<Entity> entities;
@@ -42,8 +43,9 @@ public class Level {
     }
 	
 	public Level(Player player) {
-		loadLevel();
     	camera = new Camera();
+
+		loadLevel();
     	addPlayer(player);
 	}
 	
@@ -66,14 +68,12 @@ public class Level {
 					case 0xFFFFFF: tiles[x + y * width] = new AirTile(); break;
 					case 0x808080: tiles[x + y * width] = new GroundTile(); break;
 					case 0x00FF00: tiles[x + y * width] = new AirTile(); xSpawn = xx; ySpawn = yy; break;
-					case 0xFF0000: tiles[x + y * width] = new AirTile(); add(new CleanerBot(xx, yy)); break;
-					case 0x0000FF: tiles[x + y * width] = new AirTile(); add(new WinPipe(xx, yy)); break;
-					case 0x800000: tiles[x + y * width] = new AirTile(); add(new JunkRemover(xx, yy, this)); break;
 					default: tiles[x + y * width] = new AirTile(); break;
 				}
 			}
 		}
 		
+		EntityLoader.loadEntities(this);
 		collidables = Collidables.calculateCollidables(this);
 	}
     
@@ -101,12 +101,6 @@ public class Level {
     		resetLevel();
     	}
     	
-    	if(input.isLeftMousePressed()) {
-    		int mouseX = (int) (input.getMouseX() / Main.SCALE + camera.getXO());
-    		int mouseY = (int) (input.getMouseY() / Main.SCALE + camera.getYO());
-    		System.out.println(mouseX + " " + mouseY);
-    	}
-    		
     	for(int i = 0; i < entities.size(); i++) {
     		Entity entity = entities.get(i);
     		if(entity instanceof Player) ((Player) entity).tick(input);
@@ -156,19 +150,17 @@ public class Level {
     		}
     	}
     	
-    	// Render collidables
-    	for(BB bb : collidables) {
-    		int x = (int) (bb.getX() - camera.getXO());
-    		int y = (int) (bb.getY() - camera.getYO());
-    		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
-    	}
-    	
     	// Render entities
     	for(Entity entity: entities) {
 			if(entity instanceof Player) ((Player) entity).render(screen);
 			else if(entity instanceof CleanerBot) ((CleanerBot) entity).render(screen);
 			else if(entity instanceof WinPipe) ((WinPipe) entity).render(screen);
 		}
+    }
+    
+    public void previousLevel() {
+    	currentLevel--;
+    	resetLevel();
     }
     
     public void nextLevel() {
@@ -213,6 +205,14 @@ public class Level {
     
     public void setCamera(Camera camera) {
     	this.camera = camera;
+    }
+    
+    public Player getPlayer() {
+    	return player;
+    }
+    
+    public void setPlayer(Player player) {
+    	this.player = player;
     }
     
     public int getXSpawn() {

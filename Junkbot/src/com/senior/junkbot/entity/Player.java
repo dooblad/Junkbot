@@ -8,12 +8,13 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.tile.Tile;
+import com.senior.junkbot.entity.enemy.CleanerBot;
 
 public class Player extends Entity {
-	private static final double ACCELERATION = 1.0;
-	private static final double DECELERATION = 0.7;
-	private static final double JUMP = 7.0;
-	private static final double START_MASS = 2.5;
+	public static final double ACCELERATION = 1.0;
+	public static final double DECELERATION = 0.7;
+	public static final double JUMP = 7.0;
+	public static final double START_MASS = 2.5;
 	
 	private double mass;
 	
@@ -43,12 +44,6 @@ public class Player extends Entity {
 			this.ya -= JUMP;
 		}
 		
-		if(input.isKeyPressed(KeyEvent.VK_T))
-			mass += 0.1;
-		
-		if(input.isKeyPressed(KeyEvent.VK_G))
-			mass -= 0.1;
-		
 		this.ya += Level.GRAVITY * mass;
 		
 		onGround = false;
@@ -59,8 +54,14 @@ public class Player extends Entity {
 			for(int y = (int)(this.y) / Tile.size - distanceCheck; y < (int)(this.y + this.width) / Tile.size + distanceCheck; y++) {
 				if(y < 0 || y >= level.getHeight()) continue;
 				for(Entity entity: level.getEntityMap()[x + y * level.getWidth()]) {
-					if(entity.isSolid() && !(entity instanceof Player)) {
-						tryCollideWithEntity(entity);
+					if(entity.isSolid() && !(entity instanceof Player) && tryCollideWithEntity(entity)) {
+						if(entity instanceof CleanerBot) {
+							//System.out.println(this.xa);
+							//this.xa = entity.getXA();
+							this.x += entity.getXA();
+						} else if(entity instanceof WinPipe) {
+							level.nextLevel();
+						}
 					}
 				}
 			}

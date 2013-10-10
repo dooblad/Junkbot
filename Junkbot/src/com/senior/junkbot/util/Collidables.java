@@ -1,4 +1,4 @@
-package collidables;
+package com.senior.junkbot.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,26 +9,11 @@ import java.util.List;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.tile.AirTile;
 import com.senior.junkbot.tile.Tile;
-import com.senior.junkbot.util.BB;
 
 public class Collidables {
 	
 	public static BB[] calculateCollidables(Level level) {
 		int counter = 0;
-
-		List<BB> yBB = new ArrayList<BB>();
-		
-		for(int x = 0; x < level.getWidth(); x++) {
-			for(int y = 0; y < level.getHeight(); y++) {
-				if(y < level.getHeight() - 1 && !(level.getTile(x, level.getHeight() - y - 1) instanceof AirTile)) {
-					counter++;
-				} else if(counter > 0) {
-					yBB.add(new BB(x * Tile.size, (level.getHeight() - y - counter - 1) * Tile.size, Tile.size, counter * Tile.size));
-					counter = 0;
-				}
-			}
-			counter = 0;
-		}
 		
 		List<BB> xBB = new ArrayList<BB>();
 		
@@ -49,18 +34,11 @@ public class Collidables {
 		
 		BB[] bbs;
 		
-		if(xBB.size() < yBB.size()) {
-			bbs = new BB[xBB.size()];
-			for(int i = 0; i < xBB.size(); i++) {
-				bbs[i] = xBB.get(i);
-			}
-		} else {
-			bbs = new BB[yBB.size()];
-			for(int i = 0; i < yBB.size(); i++) {
-				bbs[i] = yBB.get(i);
-			}
+		bbs = new BB[xBB.size()];
+		for(int i = 0; i < xBB.size(); i++) {
+			bbs[i] = xBB.get(i);
 		}
-		
+	
 		return bbs;
 	}
 	
