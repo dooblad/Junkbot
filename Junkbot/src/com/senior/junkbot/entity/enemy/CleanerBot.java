@@ -5,6 +5,8 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.Player;
+import com.senior.junkbot.util.BB;
 
 public class CleanerBot extends Entity {
 	public static final int DEFAULT_SPEED = 1;
@@ -37,7 +39,6 @@ public class CleanerBot extends Entity {
 	}
 	
 	public void tick(InputHandler input) {
-		
 		if(right) 
 			xa = speed;
 		else 
@@ -51,6 +52,35 @@ public class CleanerBot extends Entity {
 	
 	public void render(Screen screen) {
 		screen.draw(Bitmaps.cleanerBot, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
+	}
+	
+	public boolean collideWithPlayer(Player player) {
+		boolean collided = false;
+    	
+    	if(BB.intersects(player.getX(), player.getWidth(), player.getY() + player.getYA(), player.getHeight(), this.x, this.width, this.y, this.height)) {
+			if(player.getYA() > 0) {
+				player.setY(this.getY() - player.getHeight());
+			} else if(player.getYA() < 0) {
+				player.setY(this.y + this.height);
+			}
+			player.setYA(0);
+			player.setOnGround(true);
+			collided = true;
+		} else if(BB.intersects(player.getX() + player.getXA(), player.getWidth(), player.getY(), player.getHeight(), this.x, this.width, this.y, this.height)) {
+			if(player.getXA() > 0) {
+				player.setX(this.getX() - player.getWidth());
+			} else if(player.getXA() < 0) {
+				player.setX(this.getX() + this.getWidth());
+			}
+			player.setXA(0);
+			collided = true;
+		}
+
+    	return collided;
+	}
+	
+	public void switchDirection() {
+		right = !right;
 	}
 	
 	// Getters and Setters

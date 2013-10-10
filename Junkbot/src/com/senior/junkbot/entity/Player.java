@@ -54,15 +54,13 @@ public class Player extends Entity {
 			for(int y = (int)(this.y) / Tile.size - distanceCheck; y < (int)(this.y + this.width) / Tile.size + distanceCheck; y++) {
 				if(y < 0 || y >= level.getHeight()) continue;
 				for(Entity entity: level.getEntityMap()[x + y * level.getWidth()]) {
-					if(entity.isSolid() && !(entity instanceof Player) && tryCollideWithEntity(entity)) {
-						if(entity instanceof CleanerBot) {
-							//System.out.println(this.xa);
-							//this.xa = entity.getXA();
+					//if(entity.isSolid() && !(entity instanceof Player) && tryCollideWithEntity(entity)) {
+						if(entity instanceof CleanerBot && ((CleanerBot) entity).collideWithPlayer(this)) {
 							this.x += entity.getXA();
 						} else if(entity instanceof WinPipe) {
 							level.nextLevel();
 						}
-					}
+					//}
 				}
 			}
 		}
