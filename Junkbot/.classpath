@@ -10,6 +10,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/Java2D.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="lib/JOrbis.jar"/>
+	<classpathentry kind="lib" path="lib/slick-util.jar"/>
+	<classpathentry kind="lib" path="lib/Jorbis-Oggdecoder-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

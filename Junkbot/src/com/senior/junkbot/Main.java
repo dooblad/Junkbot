@@ -2,6 +2,8 @@ package com.senior.junkbot;
 
 import java.awt.event.KeyEvent;
 
+import org.lwjgl.openal.AL10;
+
 import sound.Sounds;
 import bitmaps.Bitmaps;
 
@@ -44,8 +46,9 @@ public class Main extends GameLoop{
 	
 	public void tick(InputHandler input, boolean paused) {
 		currentState.tick(input);
-		if(input.isKeyPressed(KeyEvent.VK_F))
-			Sounds.test.togglePlay();
+		if(input.isKeyPressed(KeyEvent.VK_F)) 
+			Sounds.level.play();
+			//Sounds.test
 	}
 	
 	public void render(Screen screen, boolean paused) {

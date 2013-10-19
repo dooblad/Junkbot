@@ -8,6 +8,9 @@ public class Sound {
 	private IntBuffer source;
 	private boolean playing;
 	
+	public Sound() {
+	}
+	
 	public Sound(IntBuffer source) {
 		this.source = source;
 		playing = false;
