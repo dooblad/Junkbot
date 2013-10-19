@@ -9,6 +9,7 @@ public class Sound {
 	private boolean playing;
 	
 	public Sound() {
+		
 	}
 	
 	public Sound(IntBuffer source) {
@@ -17,10 +18,10 @@ public class Sound {
 	}
 	
 	public void play() {
-		if(!playing) {
-			alSourcePlay(source);
-			playing = true;
-		}
+		if(playing)
+			alSourceStop(source);
+		alSourcePlay(source);
+		playing = true;
 	}
 	
 	public void pause() {

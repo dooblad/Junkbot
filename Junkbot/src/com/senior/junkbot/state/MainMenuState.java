@@ -19,6 +19,7 @@ public class MainMenuState extends GameState {
 	
 	public void tick(InputHandler input) {
 		if(input.isKeyPressed(KeyEvent.VK_ENTER)) {
+			Sounds.title.stop();
 			Sounds.level.play();
 			main.changeState(new LevelState(main));
 		}

@@ -2,6 +2,8 @@ package com.senior.junkbot.entity;
 
 import java.awt.event.KeyEvent;
 
+import sound.Sounds;
+
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
@@ -45,9 +47,10 @@ public class Player extends Entity {
 		}
 		
 		if(input.keys[KeyEvent.VK_W]) {
-			if(onGround)
+			if(onGround) {
 				this.ya -= JUMP;
-			else
+				Sounds.jump.play();
+			} else
 				this.ya -= this.mass / 10;
 		}
 		
