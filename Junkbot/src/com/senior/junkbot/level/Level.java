@@ -10,9 +10,12 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.Particle;
 import com.senior.junkbot.entity.Player;
-import com.senior.junkbot.entity.WinPipe;
-import com.senior.junkbot.entity.enemy.CleanerBot;
+import com.senior.junkbot.entity.enemy.CleanerTurret;
+import com.senior.junkbot.entity.neutral.CleanerBot;
+import com.senior.junkbot.entity.neutral.WinPipe;
+import com.senior.junkbot.entity.projectiles.TurretShot;
 import com.senior.junkbot.tile.AirTile;
 import com.senior.junkbot.tile.GroundTile;
 import com.senior.junkbot.tile.Tile;
@@ -104,8 +107,13 @@ public class Level {
     	for(int i = 0; i < entities.size(); i++) {
     		Entity entity = entities.get(i);
     		if(entity instanceof Player) ((Player) entity).tick(input);
-    		else if(entity instanceof CleanerBot) ((CleanerBot) entity).tick(input);
-    		else if(entity instanceof WinPipe) ((WinPipe) entity).tick(input);
+    		else if(entity instanceof CleanerBot) ((CleanerBot) entity).tick();
+    		else if(entity instanceof CleanerTurret) ((CleanerTurret) entity).tick();
+    		else if(entity instanceof TurretShot) {
+    			((TurretShot) entity).tick();
+    		}
+    		else if(entity instanceof WinPipe) ((WinPipe) entity).tick();
+    		else if(entity instanceof Particle) ((Particle) entity).tick();
     	}
     	
     	camera.tick(input);
@@ -154,7 +162,10 @@ public class Level {
     	for(Entity entity: entities) {
 			if(entity instanceof Player) ((Player) entity).render(screen);
 			else if(entity instanceof CleanerBot) ((CleanerBot) entity).render(screen);
+			else if(entity instanceof CleanerTurret) ((CleanerTurret) entity).render(screen);
+			else if(entity instanceof TurretShot) ((TurretShot) entity).render(screen);
 			else if(entity instanceof WinPipe) ((WinPipe) entity).render(screen);
+			else if(entity instanceof Particle) ((Particle) entity).render(screen);
 		}
     }
     

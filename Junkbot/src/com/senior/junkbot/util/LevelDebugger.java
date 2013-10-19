@@ -44,6 +44,7 @@ public class LevelDebugger {
 				player.setYA(0);
 		}
 		
+		// Level reset
 		if(input.isKeyPressed(KeyEvent.VK_R)) {
     		if(input.keys[KeyEvent.VK_SHIFT]) {
     			player.setX(customSpawnCoords[0]);
@@ -56,11 +57,19 @@ public class LevelDebugger {
     	}
     	
     	if(input.keys[KeyEvent.VK_CONTROL]) {
+    		// Level control
     		if(input.isKeyPressed(KeyEvent.VK_LEFT))
     			level.previousLevel();
     		else if(input.isKeyPressed(KeyEvent.VK_RIGHT))
     			level.nextLevel();
     		
+    		// Player mass increase/decrease
+        	if(input.isKeyPressed(KeyEvent.VK_UP))
+    			player.setMass(player.getMass() + 0.2);
+        	else if(input.isKeyPressed(KeyEvent.VK_DOWN))
+        		player.setMass(player.getMass() - 0.2);
+    		
+        	// Player teleportation
     		if(input.isKeyPressed(KeyEvent.VK_T)) {
     			player.setX(input.getMouseX() / Main.SCALE + level.getCamera().getXO());
     			player.setY(input.getMouseY() / Main.SCALE + level.getCamera().getYO());
@@ -77,12 +86,6 @@ public class LevelDebugger {
     		System.out.println(mouseX + " " + mouseY);
     	}
     	
-    	// Player mass increase/decrease
-    	if(input.isKeyPressed(KeyEvent.VK_Y))
-			player.setMass(player.getMass() + 0.2);
-    	else if(input.isKeyPressed(KeyEvent.VK_H))
-    		player.setMass(player.getMass() - 0.2);
-    	
     	// Save the player coordinates in case the level is reset
     	customSpawnCoords[0] = player.getX();
 		customSpawnCoords[1] = player.getY();
@@ -95,14 +98,5 @@ public class LevelDebugger {
     		int y = (int) (bb.getY() - level.getCamera().getYO());
     		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
     	}
-	}
-	
-	// Getters and Setters
-	private Level getLevel() {
-		return level;
-	}
-	
-	private void setLevel(Level level) {
-		this.level = level;
 	}
 }

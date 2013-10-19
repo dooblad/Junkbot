@@ -1,7 +1,6 @@
 package com.senior.junkbot.entity;
 
 import com.doobs.java2d.gfx.Screen;
-import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.util.BB;
 
@@ -22,11 +21,11 @@ public class Entity {
     	this(0, 0, null);
     }
     
-    public Entity(int x, int y) {
+    public Entity(double x, double y) {
     	this(x, y, null);
     }
     
-    public Entity(int x, int y, Level level) {
+    public Entity(double x, double y, Level level) {
     	this.x = x;
     	this.y = y;
     	this.level = level;
@@ -39,10 +38,11 @@ public class Entity {
     	this.solid = true;
     }
     
-    public void tick(InputHandler input) {
+    protected void tick() {
     	
     }
-    public void render(Screen screen) {
+    
+    protected void render(Screen screen) {
     	
     }
     
@@ -65,7 +65,7 @@ public class Entity {
     				this.y = bb.getY() - height;
     				onGround = true;
     			} else if(this.ya < 0) {
-    				this.y = bb.getY() + bb.getWidth();
+    				this.y = bb.getY() + bb.getHeight() + 1;
     			}
     			this.ya = 0;
     			collided = true;

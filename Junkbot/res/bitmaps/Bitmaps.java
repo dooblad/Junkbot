@@ -11,6 +11,8 @@ import com.senior.junkbot.level.Level;
 
 public class Bitmaps {
 	public static Bitmap player;
+	public static Bitmap cleanerTurret;
+	public static Bitmap turretShot;
 	public static Bitmap cleanerBot;
 	public static Bitmap winPipe;
 	public static Bitmap mainMenu;
@@ -20,6 +22,10 @@ public class Bitmaps {
 	
 	public static void init(BitmapLoader loader) {
 		player = loadBitmap(loader, "entities/player.png");
+		
+		cleanerTurret = loadBitmap(loader, "entities/cleanerTurret.png");
+		turretShot = loadBitmap(loader, "entities/turretShot.png");
+		
 		cleanerBot = loadBitmap(loader, "entities/cleanerBot.png");
 		winPipe = loadBitmap(loader, "entities/winPipe.png");
 		

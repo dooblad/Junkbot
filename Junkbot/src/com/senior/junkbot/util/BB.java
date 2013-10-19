@@ -19,6 +19,14 @@ public class BB {
 		this.height = height;
 	}
 	
+	public boolean pointIntersects(double x, double y) {
+		return !(x >= this.x + this.width || y >= this.y + this.height || x < this.x || y < this.y);
+	}
+	
+	public static boolean pointIntersects(double x1, double y1, double x2, int width2, double y2, int height2) {
+		return !(x1 >= x2 + width2 || y1 >= y2 + height2 || x1 < x2 || y1 < y2);
+	}
+	
 	public static boolean intersects(double x1, double width1, double y1, double height1, double x2, double width2, double y2, double height2) {
 		return !(x1 >= x2 + width2 || y1 >= y2 + height2 || x1 + width1 <= x2 || y1 + height1 <= y2);
 	}

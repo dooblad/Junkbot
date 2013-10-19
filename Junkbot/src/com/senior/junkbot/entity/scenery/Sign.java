@@ -1,7 +1,6 @@
 package com.senior.junkbot.entity.scenery;
 
 import com.doobs.java2d.gfx.Screen;
-import com.doobs.java2d.input.InputHandler;
 
 public class Sign extends Scenery {
 	
@@ -29,7 +28,7 @@ public class Sign extends Scenery {
 		this.yTiles = yTiles;
 	}
 	
-	public void tick(InputHandler input) {
+	public void tick() {
 		
 	}
 	
