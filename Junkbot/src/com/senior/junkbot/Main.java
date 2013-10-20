@@ -1,7 +1,5 @@
 package com.senior.junkbot;
 
-import java.awt.event.KeyEvent;
-
 import sound.Sounds;
 import bitmaps.Bitmaps;
 
@@ -41,11 +39,12 @@ public class Main extends GameLoop{
 		
 		game.start();
 		
-		Sounds.title.play();
+		MusicHandler.changeSong(Sounds.title);
 	}
 	
 	public void tick(InputHandler input, boolean paused) {
 		currentState.tick(input);
+		MusicHandler.tick(input);
 	}
 	
 	public void render(Screen screen, boolean paused) {

@@ -58,10 +58,22 @@ public class CleanerTurret extends Entity {
 		screen.draw(Bitmaps.cleanerTurret, xo, yo);
 		
 		if(Math.abs(this.shotXA) > Math.abs(this.shotYA)) {
-			yo += (this.height - Bitmaps.cleanerTurret.getHeight()) / 2;
+			yo += (this.height - Bitmaps.cleanerTurret.getHeight()) / 2 + 10;
+			if(this.shotXA > 0) {
+				xo += this.width;
+				screen.draw(Bitmaps.cleanerTurretCannon, xo, yo);
+			} else {
+				screen.drawFlipped(Bitmaps.cleanerTurretCannon, xo, yo, (byte) 0x10);
+			}
 		} else {
 			xo += (this.width - Bitmaps.cleanerTurretCannon.getWidth()) / 2;
+			if(this.shotYA > 0) {
+				yo += this.height;
+				screen.drawCW(Bitmaps.cleanerTurretCannon, xo, yo);
+			} else {
+				yo -= Bitmaps.cleanerTurretCannon.getHeight() + 1;
+				screen.drawCCW(Bitmaps.cleanerTurretCannon, xo, yo);
+			}
 		}
-		screen.drawFlipped(Bitmaps.cleanerTurretCannon, xo, yo, (byte) 0x01);
 	}
 }

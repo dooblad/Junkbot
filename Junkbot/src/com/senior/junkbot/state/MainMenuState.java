@@ -9,6 +9,7 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
+import com.senior.junkbot.MusicHandler;
 
 public class MainMenuState extends GameState {
 	public static final int ID = 0;
@@ -19,8 +20,7 @@ public class MainMenuState extends GameState {
 	
 	public void tick(InputHandler input) {
 		if(input.isKeyPressed(KeyEvent.VK_ENTER)) {
-			Sounds.title.stop();
-			Sounds.level.play();
+			MusicHandler.changeSong(Sounds.level);
 			main.changeState(new LevelState(main));
 		}
 	}
