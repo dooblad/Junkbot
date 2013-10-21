@@ -93,10 +93,10 @@ public class LevelDebugger {
 	
 	public void render(Screen screen) {
 		// Render collidables
-    	for(BB bb : level.collidables) {
+    	/*for(BB bb : level.collidables) {
     		int x = (int) (bb.getX() - level.getCamera().getXO());
     		int y = (int) (bb.getY() - level.getCamera().getYO());
     		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
-    	}
+    	}*/
 	}
 }

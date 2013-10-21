@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.senior.junkbot.entity.Jetpack;
 import com.senior.junkbot.entity.enemy.CleanerTurret;
 import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
@@ -37,8 +38,6 @@ public class EntityLoader {
 					}
 					
 					level.add(new CleanerBot(x, y, xa, ya, turnTime));
-				} else if(split[0].equals("WP")) { // Win Pipe (int x, int y)
-					level.add(new WinPipe(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
 				} else if(split[0].equals("CT")) { // Cleaner Turret (int x, int y, double xa, double ya, int fireRate, int shotLife)
 					int x = 0;
 					int y = 0;
@@ -57,6 +56,10 @@ public class EntityLoader {
 					}
 					
 					level.add(new CleanerTurret(x, y, xa, ya, fireRate, shotLife));
+				} else if(split[0].equals("WP")) { // Win Pipe (int x, int y)
+					level.add(new WinPipe(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
+				} else if(split[0].equals("JP")) { // Jetpack (int x, int y)
+					level.add(new Jetpack(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
 				} else if(split[0].contains("//")) {
 					
 				}

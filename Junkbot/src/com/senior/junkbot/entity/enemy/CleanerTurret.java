@@ -13,6 +13,7 @@ public class CleanerTurret extends Entity {
 	
 	private int fireRate, fireCounter;
 	
+	private int cannonX, cannonY;
 	private double shotXA, shotYA;
 	private int shotLife;
 	
@@ -41,6 +42,8 @@ public class CleanerTurret extends Entity {
 		this.fireRate = fireRate;
 		this.fireCounter = fireRate - 1;
 		this.shotLife = shotLife;
+		
+		calculateCannonPosition();
 	}
 	
 	public void tick() {
@@ -58,21 +61,35 @@ public class CleanerTurret extends Entity {
 		screen.draw(Bitmaps.cleanerTurret, xo, yo);
 		
 		if(Math.abs(this.shotXA) > Math.abs(this.shotYA)) {
-			yo += (this.height - Bitmaps.cleanerTurret.getHeight()) / 2 + 10;
 			if(this.shotXA > 0) {
-				xo += this.width;
-				screen.draw(Bitmaps.cleanerTurretCannon, xo, yo);
+				screen.draw(Bitmaps.cleanerTurretCannon, xo + cannonX, yo + cannonY);
 			} else {
-				screen.drawFlipped(Bitmaps.cleanerTurretCannon, xo, yo, (byte) 0x10);
+				screen.drawFlipped(Bitmaps.cleanerTurretCannon, xo + cannonX, yo + cannonY, (byte) 0x10);
 			}
 		} else {
-			xo += (this.width - Bitmaps.cleanerTurretCannon.getWidth()) / 2;
 			if(this.shotYA > 0) {
-				yo += this.height;
-				screen.drawCW(Bitmaps.cleanerTurretCannon, xo, yo);
+				screen.drawCW(Bitmaps.cleanerTurretCannon, cannonX, cannonY);
 			} else {
-				yo -= Bitmaps.cleanerTurretCannon.getHeight() + 1;
-				screen.drawCCW(Bitmaps.cleanerTurretCannon, xo, yo);
+				screen.drawCCW(Bitmaps.cleanerTurretCannon, cannonX, cannonY);
+			}
+		}
+	}
+	
+	private void calculateCannonPosition() {
+		if(Math.abs(this.shotXA) > Math.abs(this.shotYA)) {
+			this.cannonY = (this.height - Bitmaps.cleanerTurretCannon.getHeight()) / 2;
+			if(this.shotXA > 0) {
+				this.cannonX = this.width;
+			} else {
+				this.cannonX = this.width - Bitmaps.cleanerTurretCannon.getWidth() + 1;
+			}
+		} else {
+			if(this.shotYA > 0) {
+				this.cannonX = (this.width - Bitmaps.cleanerTurretCannon.getWidth()) / 2;
+				this.cannonY = this.height;
+			} else {
+				this.cannonX = (this.width - Bitmaps.cleanerTurretCannon.getWidth()) / 2 + 1;
+				this.cannonY = Bitmaps.cleanerTurretCannon.getHeight() + 2;
 			}
 		}
 	}

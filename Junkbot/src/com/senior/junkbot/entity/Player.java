@@ -22,6 +22,10 @@ public class Player extends Entity {
 	public static final double START_MASS = 5.0;
 	public static final double TERMINAL_VELOCITY = 10.0;
 	
+	private Jetpack jetpack;
+	
+	private boolean collidedX, collidedY;
+	
 	private double mass;
 	
 	public Player() {
@@ -36,6 +40,9 @@ public class Player extends Entity {
 		super(x, y, level);
 		this.width = Bitmaps.player.getWidth();
 		this.height = Bitmaps.player.getHeight();
+		this.jetpack = null;
+		this.collidedX = false;
+		this.collidedY = false;
 		this.mass = START_MASS;
 	}
 	
@@ -46,10 +53,11 @@ public class Player extends Entity {
 			this.xa += ACCELERATION;
 		}
 		
+		boolean jumped = false;
 		if(input.keys[KeyEvent.VK_W]) {
 			if(onGround) {
 				this.ya -= JUMP;
-				Sounds.jump.play();
+				jumped = true;
 			} else
 				this.ya -= this.mass / 10;
 		}
@@ -58,51 +66,39 @@ public class Player extends Entity {
 		
 		if(this.ya > TERMINAL_VELOCITY) this.ya = TERMINAL_VELOCITY;
 		
+		boolean wasCollidingY = collidedY;
 		onGround = false;
-		
+		collidedX = false;
+		collidedY = false;
 		tryMove();
+		
+		// This set of variables is to prevent the jump noise from being spammed while attached to a CleanerBot
+		if(jumped && wasCollidingY)
+			Sounds.jump.play();
 		
 		this.xa *= DECELERATION;
 	}
 	
 	public void render(Screen screen) {
-		screen.draw(Bitmaps.player, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
+		if(this.xa > 0) 
+			screen.draw(Bitmaps.player, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
+		else 
+			screen.drawFlipped(Bitmaps.player, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()), (byte) 0x10);
 	}
 	
 	private void tryMove() {
-		boolean collided = false;
 		
     	for(BB bb : level.collidables) {
     		if(Math.abs(this.xa) > Math.abs(this.ya)) {
-	    		collided |= handleCollisionX(bb);
-	    		collided |= handleCollisionY(bb);
+	    		this.collidedX |= handleCollisionX(bb);
+	    		this.collidedY |= handleCollisionY(bb);
     		} else {
-    			collided |= handleCollisionY(bb);
-	    		collided |= handleCollisionX(bb);
+    			this.collidedY |= handleCollisionY(bb);
+	    		this.collidedX |= handleCollisionX(bb);
     		}
-    		/*if(bb.intersects(this.x + this.xa, this.y, this.width, this.height)) {
-    			if(this.x < bb.getX()) {
-    				this.x = bb.getX() - this.width;
-    			} else if(this.x > bb.getX() + bb.getWidth()) {
-    				this.x = bb.getX() + bb.getWidth();
-    			}
-    			collided = true;
-    			this.xa = 0;
-    		}
-    		
-    		if(bb.intersects(this.x, this.y + this.ya, this.width, this.height)) {
-    			if(this.y > bb.getY() + bb.getHeight()) {
-    				this.y = bb.getY() + bb.getHeight();
-    			} else if(this.y < bb.getY()) {
-    				this.y = bb.getY() - this.height;
-    				onGround = true;
-    			}
-    			collided = true;
-    			this.ya = 0;
-    		}*/
     	}
     	
-		collideWithEntities(collided);
+		collideWithEntities(this.collidedX, this.collidedY);
     	
     	this.x += this.xa;
     	this.y += this.ya;
@@ -138,19 +134,21 @@ public class Player extends Entity {
 		return false;
 	}
 	
-	public void collideWithEntities(boolean playerColliding) {
+	public void collideWithEntities(boolean collidedX, boolean collidedY) {
 		int distanceCheck = 3;
 		for(int x = (int)(this.x / Tile.size - distanceCheck); x < (int) ((this.x + this.width) / Tile.size + distanceCheck); x++) {
 			if(x < 0 || x >= level.getWidth()) continue;
 			for(int y = (int)(this.y) / Tile.size - distanceCheck; y < (int)(this.y + this.width) / Tile.size + distanceCheck; y++) {
 				if(y < 0 || y >= level.getHeight()) continue;
 				for(Entity entity: level.getEntityMap()[x + y * level.getWidth()]) {
-					if(entity instanceof CleanerBot && ((CleanerBot) entity).collideWithPlayer(this, playerColliding)) {
+					if(entity instanceof CleanerBot && ((CleanerBot) entity).collideWithPlayer(this, collidedX, collidedY)) {
 						this.x += entity.getXA();
-					} else if(entity instanceof WinPipe && ((WinPipe) entity).collideWithPlayer(this)) {
-						level.nextLevel();
 					} else if(entity instanceof TurretShot && ((TurretShot) entity).collideWithPlayer(this)) {
 						level.resetLevel();
+					} else if(entity instanceof WinPipe && ((WinPipe) entity).collideWithPlayer(this)) {
+						level.nextLevel();
+					} else if(entity instanceof Jetpack && ((Jetpack) entity).collideWithPlayer(this)) {
+						this.jetpack = (Jetpack) entity;
 					}
 				}
 			}
@@ -165,6 +163,10 @@ public class Player extends Entity {
 	}
 	
 	// Getters and Setters
+	public void setJetpack(Jetpack jetpack) {
+		this.jetpack = jetpack;
+	}
+	
 	public double getMass() {
 		return mass;
 	}

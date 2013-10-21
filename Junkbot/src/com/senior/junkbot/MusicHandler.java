@@ -7,7 +7,7 @@ import sound.Sound;
 import com.doobs.java2d.input.InputHandler;
 
 public class MusicHandler {
-	public static boolean muted;
+	public static boolean muted = true;
 	public static Sound currentSong;
 	
 	public static void tick(InputHandler input) {
