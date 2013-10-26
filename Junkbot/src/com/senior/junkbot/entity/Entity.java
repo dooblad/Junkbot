@@ -130,6 +130,10 @@ public class Entity {
 	public void setXA(double xa) {
 		this.xa = xa;
 	}
+	
+	public void applyXA(double xa) {
+		this.xa += xa;
+	}
 
 	public double getYA() {
 		return ya;
@@ -137,6 +141,10 @@ public class Entity {
 
 	public void setYA(double ya) {
 		this.ya = ya;
+	}
+	
+	public void applyYA(double ya) {
+		this.ya += ya;
 	}
 
 	public double getX() {
@@ -152,6 +160,11 @@ public class Entity {
 	}
 
 	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public void setPosition(double x, double y) {
+		this.x = x;
 		this.y = y;
 	}
 

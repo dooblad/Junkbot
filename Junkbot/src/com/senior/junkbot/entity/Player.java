@@ -64,6 +64,13 @@ public class Player extends Entity {
 		
 		this.ya += Level.GRAVITY * mass;
 		
+		if(jetpack != null) { 
+			if(input.keys[KeyEvent.VK_SPACE])
+				jetpack.activate();
+			else
+				jetpack.deactivate();
+		}
+		
 		if(this.ya > TERMINAL_VELOCITY) this.ya = TERMINAL_VELOCITY;
 		
 		boolean wasCollidingY = collidedY;

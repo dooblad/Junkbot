@@ -5,9 +5,15 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.util.BB;
 
-public class Jetpack extends Entity{
+public class Jetpack extends Entity {
+	private static final double THRUST = -0.45;
+	private static final int DEFAULT_FUEL = 90;
+	
 	private Entity entity;
 	private boolean facingRight;
+	private boolean active;
+	
+	private int fuel, maxFuel;
 	
 	public Jetpack() {
 		this(0, 0, null);
@@ -26,21 +32,33 @@ public class Jetpack extends Entity{
 		this.width = Bitmaps.jetpack.getWidth();
 		this.height = Bitmaps.jetpack.getHeight();
 		this.entity = entity;
-		facingRight = false;
+		this.facingRight = false;
+		this.active = false;
+		this.maxFuel = DEFAULT_FUEL;
+		this.fuel = maxFuel; 
 	}
 	
 	public void tick() {
 		if(entity != null) {
-			if(entity.getXA() > 0) {
-				this.x = entity.getX() - this.width + 1;
+			if(entity.getXA() > 0)
 				facingRight = true;
-			} else if(entity.getXA() < 0){
-				this.x = entity.getX() + entity.getWidth();
+			else if(entity.getXA() < 0)
 				facingRight = false;
-			}
+			
+			if(facingRight)
+				this.x = entity.getX() - this.width + 1;
+			else
+				this.x = entity.getX() + entity.getWidth();
+			
+			if(active && fuel > 0) {
+				applyThrust();
+				fuel--;
+			} else if(fuel < maxFuel)
+				fuel++;
 			
 			this.y = entity.getY() + (entity.getHeight() - this.height) / 2 + 1;
 		}
+		
 	}
 	
 	public void render(Screen screen) {
@@ -51,12 +69,12 @@ public class Jetpack extends Entity{
 		
 		xo += 2;
 		yo += 2;
-	
+		
 		// Render fuel tank
-		for(int i = 0; i < 9; i++) {
-			int red = ((255 / 9) * i) << 16;
-			int green = ((255 / 9) * (9 - i)) << 8;
-			screen.drawPoint(0xFF000000 | red | green, xo, yo + i);
+		for(int i = 0; i < (int) (((double) fuel / maxFuel) * 9); i++) {
+			int red = ((255 / 9) * (9 - i)) << 16;
+			int green = ((255 / 9) * i) << 8;
+			screen.drawPoint(0xFF000000 | red | green, xo, (yo + 8 - i));
 		}
 	}
 
@@ -69,5 +87,17 @@ public class Jetpack extends Entity{
     	this.entity = player;
     	
     	return collided;
+	}
+
+	public void activate() {
+		this.active = true;
+	}
+	
+	public void deactivate() {
+		this.active = false;
+	}
+	
+	public void applyThrust() {
+		entity.applyYA(THRUST);
 	}
 }

@@ -5,8 +5,10 @@ import java.awt.event.KeyEvent;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
+import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.level.Level;
+import com.senior.junkbot.tile.Tile;
 
 public class LevelDebugger {
 	private static final int FLYING_ACCELERATION = 3;
@@ -16,6 +18,8 @@ public class LevelDebugger {
 	
 	private boolean playerFlying;
     private double[] customSpawnCoords;
+    
+    private boolean renderingCollidables;
 
 	public LevelDebugger() {
 		this(null, null);
@@ -29,9 +33,15 @@ public class LevelDebugger {
 		
 		customSpawnCoords[0] = level.getXSpawn();
 		customSpawnCoords[1] = level.getYSpawn();
+		
+		renderingCollidables = false;
 	}
 	
 	public void tick(InputHandler input) {
+		
+		// Toggle renderingCollidables
+		if(input.isKeyPressed(KeyEvent.VK_F1))
+			renderingCollidables = !renderingCollidables;
 		
 		// Flying effects
 		if(playerFlying) {
@@ -82,8 +92,34 @@ public class LevelDebugger {
     	// Gives the position of the mouse in the level's coordinate space
     	if(input.isLeftMousePressed()) {
     		int mouseX = (int) (input.getMouseX() / Main.SCALE + level.getCamera().getXO());
-    		int mouseY = (int) (input.getMouseY() / Main.SCALE + level.getCamera().getYO());
-    		System.out.println(mouseX + " " + mouseY);
+			int mouseY = (int) (input.getMouseY() / Main.SCALE + level.getCamera().getYO());
+			
+			if((mouseX / Tile.size) > level.getWidth())
+				mouseX = level.getWidth() * Tile.size;
+			else if(mouseX < 0) {
+				mouseX = 0;
+			}
+			
+			if((mouseY / Tile.size) > level.getHeight())
+				mouseY = level.getHeight() * Tile.size;
+			else if(mouseY < 0)
+				mouseY = 0;
+				
+    		if(input.keys[KeyEvent.VK_CONTROL]) {
+    			for(int x = -1; x < 1; x++) {
+    				for(int y = -1; y < 1; y++) {
+    					for(Entity entity : level.entityMap[(mouseX / Tile.size) + x + (mouseY / Tile.size + y) * level.getWidth()]) {
+    						if(BB.pointIntersects(mouseX, mouseY, entity.getX(), entity.getWidth(), entity.getY(), entity.getHeight())) {
+    	    					entity.setPosition(mouseX - entity.getWidth() / 2, mouseY - entity.getHeight() / 2);
+    	    					entity.setXA(0);
+    	    					entity.setYA(0);
+    	    				}
+    					}
+    				}
+    			}
+    		} else {
+    			System.out.println(mouseX + " " + mouseY);
+    		}
     	}
     	
     	// Save the player coordinates in case the level is reset
@@ -93,10 +129,12 @@ public class LevelDebugger {
 	
 	public void render(Screen screen) {
 		// Render collidables
-    	/*for(BB bb : level.collidables) {
-    		int x = (int) (bb.getX() - level.getCamera().getXO());
-    		int y = (int) (bb.getY() - level.getCamera().getYO());
-    		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
-    	}*/
+		if(renderingCollidables) {
+	    	for(BB bb : level.collidables) {
+	    		int x = (int) (bb.getX() - level.getCamera().getXO());
+	    		int y = (int) (bb.getY() - level.getCamera().getYO());
+	    		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
+	    	}
+		}
 	}
 }

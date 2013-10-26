@@ -30,9 +30,10 @@ public class Level {
     public static final double GRAVITY = 0.2;
     public static final int NUM_OF_LEVELS = 7;
     
-    private Tile[] tiles;
-    private List<Entity> entities;
-    private List<Entity>[] entityMap;
+    public Tile[] tiles;
+    public List<Entity> entities;
+    public List<Entity>[] entityMap;
+    
     private int width, height;
     private Camera camera;
     private Player player;

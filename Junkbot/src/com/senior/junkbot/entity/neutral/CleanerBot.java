@@ -75,7 +75,8 @@ public class CleanerBot extends Entity {
 			xo = (int)(Math.random() * openingLength) + (this.width - openingLength) / 2;
 		}
 		
-		level.add(new Particle(this.x + xo, this.y + yo, tempXA, tempYA, 0xFF00FF00, particleLife));
+		if(xa != 0 || ya != 0)
+			level.add(new Particle(this.x + xo, this.y + yo, tempXA, tempYA, 0xFF00FF00, particleLife));
 	}
 	
 	private void tryMove() {
@@ -106,7 +107,31 @@ public class CleanerBot extends Entity {
 	public boolean collideWithPlayer(Player player, boolean collidedX, boolean collidedY) {
 		boolean collided = false;
     	
-    	if(BB.intersects(player.getX(), player.getWidth(), player.getY() + player.getYA(), player.getHeight(), this.x, this.width, this.y, this.height)) {
+		collided |= collideWithPlayerX(player, collidedX);
+		collided |= collideWithPlayerY(player, collidedY);
+    	
+    	return collided;
+	}
+	
+	private boolean collideWithPlayerX(Player player, boolean collidedX) {
+		if(BB.intersects(player.getX() + player.getXA(), player.getWidth(), player.getY(), player.getHeight(), this.x, this.width, this.y, this.height)) {
+			if(collidedX) {
+				this.xa = -xa;
+			} else {
+				if(player.getX() > this.x + this.width) {
+					player.setX(this.x + this.width);
+				} else if(player.getX() < this.x) {
+					player.setX(this.x - player.getWidth());
+				}
+				player.setXA(0);
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean collideWithPlayerY(Player player, boolean collidedY) {
+		if(BB.intersects(player.getX(), player.getWidth(), player.getY() + player.getYA(), player.getHeight(), this.x, this.width, this.y, this.height)) {
 			if(collidedY) {
 				this.ya = -ya;
 			} else {
@@ -118,23 +143,12 @@ public class CleanerBot extends Entity {
 				player.setYA(0);
 				player.setOnGround(true);
 			}
-			collided = true;
-		} else if(BB.intersects(player.getX() + player.getXA(), player.getWidth(), player.getY(), player.getHeight(), this.x, this.width, this.y, this.height)) {
-			if(collidedX) {
-				this.xa = -xa;
-			} else {
-				if(player.getX() > this.x + this.width) {
-					player.setX(this.x + this.width);
-				} else if(player.getX() < this.x) {
-					player.setX(this.x - player.getWidth());
-				}
-				player.setXA(0);
-			}
-			collided = true;
+			return true;
 		}
-
-    	return collided;
+		return false;
 	}
+	
+	
 	
 	// Getters and Setters
 	public int getTurnTime() {
