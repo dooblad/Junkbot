@@ -8,7 +8,7 @@ import com.doobs.java2d.GameLoop;
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.state.GameState;
-import com.senior.junkbot.state.MainMenuState;
+import com.senior.junkbot.state.menu.MainMenuState;
 import com.senior.junkbot.tile.Tile;
 
 public class Main extends GameLoop{
@@ -50,7 +50,6 @@ public class Main extends GameLoop{
 	public void render(Screen screen, boolean paused) {
 		screen.fill(0xFF000000);
 		currentState.render(screen);
-		game.setRenderFPS(true);
 	}
 	
 	public void changeState(GameState newState) {

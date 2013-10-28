@@ -15,7 +15,7 @@ import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 
-public class Player extends Entity {
+public class Player extends MovingEntity {
 	public static final double ACCELERATION = 1.0;
 	public static final double DECELERATION = 0.7;
 	public static final double JUMP = 7.0;
@@ -149,7 +149,7 @@ public class Player extends Entity {
 				if(y < 0 || y >= level.getHeight()) continue;
 				for(Entity entity: level.getEntityMap()[x + y * level.getWidth()]) {
 					if(entity instanceof CleanerBot && ((CleanerBot) entity).collideWithPlayer(this, collidedX, collidedY)) {
-						this.x += entity.getXA();
+						this.x += ((MovingEntity) entity).getXA();
 					} else if(entity instanceof TurretShot && ((TurretShot) entity).collideWithPlayer(this)) {
 						level.resetLevel();
 					} else if(entity instanceof WinPipe && ((WinPipe) entity).collideWithPlayer(this)) {

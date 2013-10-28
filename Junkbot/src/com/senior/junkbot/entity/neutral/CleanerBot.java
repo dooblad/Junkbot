@@ -3,12 +3,12 @@ package com.senior.junkbot.entity.neutral;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
-import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.MovingEntity;
 import com.senior.junkbot.entity.Particle;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.util.BB;
 
-public class CleanerBot extends Entity {
+public class CleanerBot extends MovingEntity {
 	public static final double DEFAULT_SPEED = 1.0;
 	public static final int DEFAULT_TURN_TIME = -1;
 	

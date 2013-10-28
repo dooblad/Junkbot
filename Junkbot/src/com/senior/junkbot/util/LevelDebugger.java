@@ -94,25 +94,29 @@ public class LevelDebugger {
     		int mouseX = (int) (input.getMouseX() / Main.SCALE + level.getCamera().getXO());
 			int mouseY = (int) (input.getMouseY() / Main.SCALE + level.getCamera().getYO());
 			
-			if((mouseX / Tile.size) > level.getWidth())
-				mouseX = level.getWidth() * Tile.size;
+			int xTile = mouseX / Tile.size;
+			int yTile = mouseY / Tile.size;
+			
+			if(xTile > (level.getWidth() - 1))
+				mouseX = (level.getWidth() - 1) * Tile.size;
 			else if(mouseX < 0) {
 				mouseX = 0;
 			}
 			
-			if((mouseY / Tile.size) > level.getHeight())
-				mouseY = level.getHeight() * Tile.size;
+			if(yTile > (level.getHeight() - 1))
+				mouseY = (level.getHeight() - 1) * Tile.size;
 			else if(mouseY < 0)
 				mouseY = 0;
 				
+			int checkDistance = 8;
     		if(input.keys[KeyEvent.VK_CONTROL]) {
-    			for(int x = -1; x < 1; x++) {
-    				for(int y = -1; y < 1; y++) {
-    					for(Entity entity : level.entityMap[(mouseX / Tile.size) + x + (mouseY / Tile.size + y) * level.getWidth()]) {
+    			for(int x = -checkDistance; x < checkDistance; x++) {
+    				if((x + xTile) >= (level.getWidth() - 1) || (x + xTile)< 0) continue;
+    				for(int y = -checkDistance; y < checkDistance; y++) {
+    					if((y + yTile) >= (level.getHeight() - 1) || (y + yTile) < 0) continue;
+    					for(Entity entity : level.entityMap[xTile + x + (yTile + y) * level.getWidth()]) {
     						if(BB.pointIntersects(mouseX, mouseY, entity.getX(), entity.getWidth(), entity.getY(), entity.getHeight())) {
     	    					entity.setPosition(mouseX - entity.getWidth() / 2, mouseY - entity.getHeight() / 2);
-    	    					entity.setXA(0);
-    	    					entity.setYA(0);
     	    				}
     					}
     				}

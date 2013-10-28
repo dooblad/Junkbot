@@ -1,4 +1,4 @@
-package com.senior.junkbot.state;
+package com.senior.junkbot.state.menu;
 
 import java.awt.event.KeyEvent;
 
@@ -10,6 +10,8 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
 import com.senior.junkbot.MusicHandler;
+import com.senior.junkbot.state.GameState;
+import com.senior.junkbot.state.LevelState;
 
 public class MainMenuState extends GameState {
 	public static final int ID = 0;

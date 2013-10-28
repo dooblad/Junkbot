@@ -5,12 +5,13 @@ import java.awt.event.KeyEvent;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.MovingEntity;
 
 public class Camera {
 	private static final double ACCELERATION_FACTOR = 2.5;
 	private static final double DECELERATION_FACTOR = 0.7;
 	
-	private Entity entity;
+	private MovingEntity entity;
 	private double xo, yo;
 	private double xa, ya;
 	private boolean locked;
@@ -71,7 +72,7 @@ public class Camera {
 		}
 	}
 	
-	public void addEntity(Entity entity) {
+	public void addEntity(MovingEntity entity) {
 		this.entity = entity;
 	}
 	
@@ -80,7 +81,7 @@ public class Camera {
 		return entity;
 	}
 	
-	public void setEntity(Entity entity) {
+	public void setEntity(MovingEntity entity) {
 		this.entity = entity;
 	}
 	

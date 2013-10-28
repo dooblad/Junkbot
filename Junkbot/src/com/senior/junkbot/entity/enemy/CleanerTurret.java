@@ -4,6 +4,7 @@ import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.StaticAnimation;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 
 public class CleanerTurret extends Entity {
@@ -35,8 +36,8 @@ public class CleanerTurret extends Entity {
 	
 	public CleanerTurret(int x, int y, double xa, double ya, int fireRate, int shotLife) {
 		super(x, y);
-		this.width = Bitmaps.cleanerTurret.getWidth();
-		this.height = Bitmaps.cleanerTurret.getHeight();
+		this.width = Bitmaps.cleanerTurret[0].getWidth();
+		this.height = Bitmaps.cleanerTurret[0].getHeight();
 		this.shotXA = xa;
 		this.shotYA = ya;
 		this.fireRate = fireRate;
@@ -48,9 +49,7 @@ public class CleanerTurret extends Entity {
 	
 	public void tick() {
 		if(++fireCounter >= fireRate) {
-			int xo = (int) (this.x + (this.width - Bitmaps.turretShot.getWidth()) / 2);
-			int yo = (int) (this.y + (this.height - Bitmaps.turretShot.getHeight()) / 2);
-			level.add(new TurretShot(xo, yo, this.shotXA, this.shotYA, this.shotLife));
+			spawnShot();
 			fireCounter = 0;
 		}
 	}
@@ -58,7 +57,7 @@ public class CleanerTurret extends Entity {
 	public void render(Screen screen) {
 		int xo = (int) (this.x - level.getCamera().getXO());
 		int yo = (int) (this.y - level.getCamera().getYO());
-		screen.draw(Bitmaps.cleanerTurret, xo, yo);
+		screen.draw(Bitmaps.cleanerTurret[(int) (StaticAnimation.getTimerPercentage() * Bitmaps.cleanerTurret.length)], xo, yo);
 		
 		if(Math.abs(this.shotXA) > Math.abs(this.shotYA)) {
 			if(this.shotXA > 0) {
@@ -73,6 +72,14 @@ public class CleanerTurret extends Entity {
 				screen.drawCCW(Bitmaps.cleanerTurretCannon, cannonX, cannonY);
 			}
 		}
+	}
+	
+	private void spawnShot() {
+		//int xo = (int) (this.x + (this.width - Bitmaps.turretShot.getWidth()) / 2);
+		//int yo = (int) (this.y + (this.height - Bitmaps.turretShot.getHeight()) / 2);
+		int xo = (int) (this.x + this.shotXA);
+		int yo = (int) (this.y + (this.height - Bitmaps.turretShot.getHeight()) / 2);
+		level.add(new TurretShot(xo, yo, this.shotXA, this.shotYA, this.shotLife));
 	}
 	
 	private void calculateCannonPosition() {

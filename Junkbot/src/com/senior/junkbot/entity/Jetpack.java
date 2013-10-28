@@ -9,7 +9,7 @@ public class Jetpack extends Entity {
 	private static final double THRUST = -0.45;
 	private static final int DEFAULT_FUEL = 90;
 	
-	private Entity entity;
+	private MovingEntity entity;
 	private boolean facingRight;
 	private boolean active;
 	
@@ -23,11 +23,11 @@ public class Jetpack extends Entity {
 		this(x, y, null);
 	}
 	
-	public Jetpack(Entity entity) {
+	public Jetpack(MovingEntity entity) {
 		this(0, 0, entity);
 	}
 	
-	public Jetpack(int x, int y, Entity entity) {
+	public Jetpack(int x, int y, MovingEntity entity) {
 		super(x, y);
 		this.width = Bitmaps.jetpack.getWidth();
 		this.height = Bitmaps.jetpack.getHeight();

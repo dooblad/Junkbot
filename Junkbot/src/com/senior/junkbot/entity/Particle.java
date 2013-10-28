@@ -3,7 +3,7 @@ package com.senior.junkbot.entity;
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.util.BB;
 
-public class Particle extends Entity {
+public class Particle extends MovingEntity {
 	private static final int DEFAULT_COLOR = 0xFFFFFFFF;
 	private static final int DEFAULT_LIFE = 120;
 	

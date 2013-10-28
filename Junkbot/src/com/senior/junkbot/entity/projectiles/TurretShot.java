@@ -3,11 +3,11 @@ package com.senior.junkbot.entity.projectiles;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
-import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.MovingEntity;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.util.BB;
 
-public class TurretShot extends Entity {
+public class TurretShot extends MovingEntity {
 	public static int DEFAULT_LIFE = 360;
 	
 	private int currentLife, life;

@@ -4,6 +4,7 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Player;
+import com.senior.junkbot.entity.StaticAnimation;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.util.LevelDebugger;
 
@@ -22,6 +23,7 @@ public class LevelState extends GameState{
 	}
 	
 	public void tick(InputHandler input) {
+		StaticAnimation.tick();
 		level.tick(input);
 		if(Main.debug)
 			levelDebugger.tick(input);
