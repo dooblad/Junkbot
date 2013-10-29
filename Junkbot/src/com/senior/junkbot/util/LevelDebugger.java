@@ -140,5 +140,8 @@ public class LevelDebugger {
 	    		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
 	    	}
 		}
+		
+		// Render useful information
+		Font.drawStringColored("current level: " + Level.currentLevel, 0xFF00FF00, 0, 0, screen);
 	}
 }

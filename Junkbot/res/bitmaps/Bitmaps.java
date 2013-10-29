@@ -17,7 +17,7 @@ public class Bitmaps {
 	public static Bitmap turretShot;
 	public static Bitmap cleanerBot;
 	public static Bitmap winPipe;
-	public static Bitmap mainMenu;
+	public static Bitmap mainMenu, optionsMenu;
 	public static Bitmap[][] tiles;
 	public static Bitmap[] levels;
 	public static Bitmap[] sign;
@@ -35,7 +35,8 @@ public class Bitmaps {
 		cleanerBot = loadBitmap(loader, "entities/cleanerBot.png");
 		winPipe = loadBitmap(loader, "entities/winPipe.png");
 		
-		mainMenu = loadBitmap(loader, "mainMenu.png");
+		mainMenu = loadBitmap(loader, "menus/mainMenu.png");
+		optionsMenu = loadBitmap(loader, "menus/optionsMenu.png");
 		
 		tiles = loader.load2DTileSheet(getImage("tiles.png"), 1, 1);
 		
@@ -46,7 +47,7 @@ public class Bitmaps {
 		
 		sign = loader.load1DTileSheet(getImage("scenery/sign.png"), 3);
 		
-		font = loader.load1DTileSheet(getImage("font.png"), 26);
+		font = loader.load1DTileSheet(getImage("font.png"), 36);
 	}
 	
 	private static Bitmap loadBitmap(BitmapLoader loader, String URL) {
