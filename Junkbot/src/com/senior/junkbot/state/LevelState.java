@@ -1,5 +1,9 @@
 package com.senior.junkbot.state;
 
+import java.awt.event.KeyEvent;
+
+import sound.Sounds;
+
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
@@ -15,18 +19,28 @@ public class LevelState extends GameState{
 	private Level level;
 	private LevelDebugger levelDebugger;
 	
+	private boolean paused;
+	
 	public LevelState(Main main) {
 		super(main);
 		player = new Player();
 		level = new Level(player);
-		levelDebugger = new LevelDebugger(level, player);
+		levelDebugger = new LevelDebugger(main, level, player);
+		paused = false;
 	}
 	
 	public void tick(InputHandler input) {
-		StaticAnimation.tick();
-		level.tick(input);
-		if(Main.debug)
-			levelDebugger.tick(input);
+		if(input.isKeyPressed(KeyEvent.VK_ESCAPE) || input.isKeyPressed(KeyEvent.VK_P)) {
+			paused = !paused;
+			Sounds.pause.play();
+		}
+		
+		if(!paused) {
+			StaticAnimation.tick();
+			level.tick(input);
+			if(Main.debug)
+				levelDebugger.tick(input);
+		}
 	}
 	
 	public void render(Screen screen) {

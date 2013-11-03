@@ -47,7 +47,7 @@ public class Bitmaps {
 		
 		sign = loader.load1DTileSheet(getImage("scenery/sign.png"), 3);
 		
-		font = loader.load1DTileSheet(getImage("font.png"), 36);
+		font = loader.load1DTileSheet(getImage("font.png"), 64);
 	}
 	
 	private static Bitmap loadBitmap(BitmapLoader loader, String URL) {

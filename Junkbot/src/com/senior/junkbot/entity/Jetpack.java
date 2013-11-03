@@ -53,12 +53,14 @@ public class Jetpack extends Entity {
 			if(active && fuel > 0) {
 				applyThrust();
 				fuel--;
+				int color = 0xFFFF0000 | (int) (Math.random() * 255) << 8;
+				level.add(new Particle(this.x + this.width / 2, this.y + this.height, Math.random() - Math.random(), Math.random() * 2, color, 30));
 			} else if(fuel < maxFuel)
 				fuel++;
 			
 			this.y = entity.getY() + (entity.getHeight() - this.height) / 2 + 1;
+			
 		}
-		
 	}
 	
 	public void render(Screen screen) {

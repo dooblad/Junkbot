@@ -15,6 +15,7 @@ import static org.lwjgl.openal.AL10.*;
 
 public class Sounds {
 	public static Sound ground, jetpack, jump;
+	public static Sound select, optionChange, pause;
 	public static Sound title, level;
 	
 	public static void init() {
@@ -28,6 +29,10 @@ public class Sounds {
 		ground = loadSound("sfx/ground.ogg", false);
 		jetpack = loadSound("sfx/jetpack.ogg", true);
 		jump = loadSound("sfx/jump.ogg", false);
+		
+		select = loadSound("sfx/select.wav", false);
+		optionChange = loadSound("sfx/optionChange.wav", false);
+		pause = loadSound("sfx/pause.wav", false);
 		
 		title = loadSound("music/title.ogg", true);
 		level = loadSound("music/level.ogg", true);

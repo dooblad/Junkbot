@@ -154,7 +154,7 @@ public class Player extends MovingEntity {
 						level.resetLevel();
 					} else if(entity instanceof WinPipe && ((WinPipe) entity).collideWithPlayer(this)) {
 						level.nextLevel();
-					} else if(entity instanceof Jetpack && ((Jetpack) entity).collideWithPlayer(this)) {
+					} else if(entity instanceof Jetpack && this.jetpack == null && ((Jetpack) entity).collideWithPlayer(this)) {
 						this.jetpack = (Jetpack) entity;
 					}
 				}
@@ -167,6 +167,7 @@ public class Player extends MovingEntity {
 		this.ya = 0;
 		this.x = level.getXSpawn();
 		this.y = level.getYSpawn();
+		this.jetpack = null;
 	}
 	
 	// Getters and Setters

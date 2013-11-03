@@ -2,6 +2,8 @@ package com.senior.junkbot.util;
 
 import java.awt.event.KeyEvent;
 
+import bitmaps.Bitmaps;
+
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
@@ -13,19 +15,25 @@ import com.senior.junkbot.tile.Tile;
 public class LevelDebugger {
 	private static final int FLYING_ACCELERATION = 3;
 	
+	private Main main;
 	private Level level;
 	private Player player;
 	
 	private boolean playerFlying;
     private double[] customSpawnCoords;
     
-    private boolean renderingCollidables;
+    private boolean renderDebug;
 
 	public LevelDebugger() {
 		this(null, null);
 	}
 	
 	public LevelDebugger(Level level, Player player) {
+		this(null, level, player);
+	}
+	
+	public LevelDebugger(Main main, Level level, Player player) {
+		this.main = main;
 		this.level = level;
 		this.player = player;
 		customSpawnCoords = new double[2];
@@ -34,14 +42,14 @@ public class LevelDebugger {
 		customSpawnCoords[0] = level.getXSpawn();
 		customSpawnCoords[1] = level.getYSpawn();
 		
-		renderingCollidables = false;
+		renderDebug = false;
 	}
 	
 	public void tick(InputHandler input) {
 		
 		// Toggle renderingCollidables
 		if(input.isKeyPressed(KeyEvent.VK_F1))
-			renderingCollidables = !renderingCollidables;
+			renderDebug = !renderDebug;
 		
 		// Flying effects
 		if(playerFlying) {
@@ -132,16 +140,20 @@ public class LevelDebugger {
 	}
 	
 	public void render(Screen screen) {
-		// Render collidables
-		if(renderingCollidables) {
+		if(renderDebug) {
+			// Render collidables
 	    	for(BB bb : level.collidables) {
 	    		int x = (int) (bb.getX() - level.getCamera().getXO());
 	    		int y = (int) (bb.getY() - level.getCamera().getYO());
 	    		screen.drawRect(0xFFFFFF00, x, y, bb.getWidth(), bb.getHeight());
 	    	}
+	    	
+			// Render useful information
+	    	if(main != null)
+	    		Font.drawStringColored("fps: " + main.getGame2D().getFPS(), 0xFF00FF00, 0, 0, screen);
+	    	Font.drawStringColored("current level: " + Level.currentLevel, 0xFF00FF00, 0, Bitmaps.font[0].getHeight() + 1, screen);
 		}
 		
-		// Render useful information
-		Font.drawStringColored("current level: " + Level.currentLevel, 0xFF00FF00, 0, 0, screen);
+		
 	}
 }

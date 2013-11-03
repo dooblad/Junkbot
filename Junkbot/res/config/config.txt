@@ -1,0 +1,4 @@
+sfx:true
+music:true
+particles:true
+scale:2

@@ -31,14 +31,10 @@ public class Font {
 	
 	public static int parseCharToIndex(char input) {
 		int temp = (int) input;
-		if(temp >= 65 && temp <= 90) // 'A' - 'Z'
-			return 25 - (90 - input);
-		else if(temp >= 97 && temp <= 122) // 'a' - 'z'
-			return 25 - (122 - input);
-		else if(temp >= 48 && temp <= 57) // '0' - '9'
-			return 10 - (57 - input) + 25;
-		else if(temp == 45) // '-'
-			return 36;
+		if(temp > 32 && temp < 97)
+			return temp - 33;
+		else if(temp > 96 && temp < 123)
+			return temp - 65;
 		else
 			return 0;
 	}
@@ -57,4 +53,10 @@ public class Font {
 	public static int getPhraseWidth(String phrase) {
 		return phrase.length() * Bitmaps.font[0].getWidth();
 	}
+	
+	/*public static void main(String[] args) {
+		for(int i = 32; i < 126; i++) {
+			System.out.print(i + " : " + (char) i);
+		}
+	}*/
 }
