@@ -9,6 +9,8 @@ import com.senior.junkbot.Main;
 import com.senior.junkbot.MusicHandler;
 import com.senior.junkbot.state.LevelState;
 
+import config.Config;
+
 public class MainMenuState extends MenuState {
 	
 	public MainMenuState(Main main) {
@@ -37,7 +39,7 @@ public class MainMenuState extends MenuState {
 	}
 	
 	public void render(Screen screen) {
-		screen.draw(Bitmaps.mainMenu, 0, 0);
+		screen.draw(Bitmaps.mainMenu, (Config.width - Bitmaps.mainMenu.getWidth()) / 2, 55);
 		
 		super.render(screen);
 	}

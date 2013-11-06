@@ -28,7 +28,7 @@ public class OptionsMenuState extends MenuState {
 				new MenuItem("cancel")};
 		for(int i = 0; i < menuItems.length; i++) {
 			menuItems[i].centerHorizontally();
-			menuItems[i].setY(120 + i * 25);
+			menuItems[i].setY(75 + i * 25);
 		}
 		selected = 0;
 		setDefaultItemSelections();
@@ -56,7 +56,7 @@ public class OptionsMenuState extends MenuState {
 	}
 	
 	public void render(Screen screen) {
-		screen.draw(Bitmaps.optionsMenu, 0, 0);
+		screen.draw(Bitmaps.optionsMenu, (Config.width - Bitmaps.optionsMenu.getWidth()) / 2, 30);
 		
 		super.render(screen);
 	}
@@ -69,7 +69,10 @@ public class OptionsMenuState extends MenuState {
 		else
 			MusicHandler.playMusic();
 		Config.particles = ((BooleanMenuItem)menuItems[2]).getValue();
-		Config.scale = ((MultiChoiceMenuItem)menuItems[3]).getSelected() + 1;
+		Config.size = ((MultiChoiceMenuItem)menuItems[3]).getSelected();
+		int[] size = Config.parseIntToSize(Config.size);
+		main.getGame2D().setSize(size[0], size[1]);
+		Config.scale = ((MultiChoiceMenuItem)menuItems[4]).getSelected() + 1;
 		main.getGame2D().setScale(Config.scale);
 		Config.saveConfig();
 	}
@@ -78,6 +81,7 @@ public class OptionsMenuState extends MenuState {
 		((BooleanMenuItem)menuItems[0]).setValue(Config.sfx);
 		((BooleanMenuItem)menuItems[1]).setValue(Config.music);
 		((BooleanMenuItem)menuItems[2]).setValue(Config.particles);
-		((MultiChoiceMenuItem)menuItems[3]).setSelected(Config.scale - 1);
+		((MultiChoiceMenuItem)menuItems[3]).setSelected(Config.size);
+		((MultiChoiceMenuItem)menuItems[4]).setSelected(Config.scale - 1);
 	}
 }

@@ -13,7 +13,7 @@ public class Config {
 	public static boolean sfx = true, music = true, particles = true;
 	public static int width = 400, height = 300;
 	public static int scale = 2;
-	private static int size;
+	public static int size;
 	
 	public static void loadConfig(Main main) {
 		String URL = "config.txt";
@@ -86,6 +86,16 @@ public class Config {
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static int[] parseIntToSize(int value) {
+		switch(value) {
+		case 0: return new int[] {320, 240};
+		case 1: return new int[] {400, 300};
+		case 2: return new int[] {640, 480};
+		case 3: return new int[] {800, 600};
+		default: return null;
 		}
 	}
 }
