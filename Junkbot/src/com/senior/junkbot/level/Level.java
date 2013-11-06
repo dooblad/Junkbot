@@ -8,14 +8,14 @@ import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
-import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Jetpack;
-import com.senior.junkbot.entity.Particle;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.enemy.CleanerTurret;
 import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
+import com.senior.junkbot.entity.particles.Particle;
+import com.senior.junkbot.entity.particles.WinPipeParticle;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 import com.senior.junkbot.tile.AirTile;
 import com.senior.junkbot.tile.GroundTile;
@@ -23,6 +23,8 @@ import com.senior.junkbot.tile.Tile;
 import com.senior.junkbot.util.BB;
 import com.senior.junkbot.util.Camera;
 import com.senior.junkbot.util.Collidables;
+
+import config.Config;
 
 import entities.EntityLoader;
 
@@ -109,6 +111,7 @@ public class Level {
     	for(int i = 0; i < entities.size(); i++) {
     		Entity entity = entities.get(i);
     		if(entity instanceof Particle) ((Particle) entity).tick();
+    		else if(entity instanceof WinPipeParticle) ((WinPipeParticle) entity).tick();
     		else if(entity instanceof TurretShot) ((TurretShot) entity).tick();
     		else if(entity instanceof CleanerBot) ((CleanerBot) entity).tick();
     		else if(entity instanceof CleanerTurret) ((CleanerTurret) entity).tick();
@@ -149,9 +152,9 @@ public class Level {
     
     public void render(Screen screen) {
     	// Render tiles
-    	for(int x = (int) camera.getXO() / Tile.size; x < (camera.getXO() + Main.WIDTH) / Tile.size; x++) {
+    	for(int x = (int) camera.getXO() / Tile.size; x < (camera.getXO() + Config.width) / Tile.size; x++) {
     		if(x < 0 || x >= this.width) continue;
-    		for(int y = (int) camera.getYO() / Tile.size; y < (camera.getYO() + Main.HEIGHT) / Tile.size; y++) {
+    		for(int y = (int) camera.getYO() / Tile.size; y < (camera.getYO() + Config.height) / Tile.size; y++) {
     			if(y < 0 || y >= this.height) continue;
     			byte id = tiles[x + y * this.width].getID();
     			if(id == 0) continue;
@@ -162,6 +165,7 @@ public class Level {
     	// Render entities
     	for(Entity entity: entities) {
 			if(entity instanceof Particle) ((Particle) entity).render(screen);
+			else if(entity instanceof WinPipeParticle) ((WinPipeParticle) entity).render(screen);
 			else if(entity instanceof TurretShot) ((TurretShot) entity).render(screen);
 			else if(entity instanceof CleanerBot) ((CleanerBot) entity).render(screen);
 			else if(entity instanceof CleanerTurret) ((CleanerTurret) entity).render(screen);

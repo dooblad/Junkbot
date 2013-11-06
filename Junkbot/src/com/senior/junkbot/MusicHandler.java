@@ -6,8 +6,10 @@ import sound.Sound;
 
 import com.doobs.java2d.input.InputHandler;
 
+import config.Config;
+
 public class MusicHandler {
-	public static boolean muted = true;
+	public static boolean muted = false;
 	public static Sound currentSong;
 	
 	public static void tick(InputHandler input) {
@@ -19,12 +21,13 @@ public class MusicHandler {
 		if(currentSong != null)
 			currentSong.stop();
 		currentSong = song;
-		if(!muted)
+		if(Config.music && !muted)
 			song.play();
 	}
 	
 	public static void playMusic() {
-		currentSong.play();
+		if(Config.music)
+			currentSong.play();
 	}
 	
 	public static void pauseMusic() {
@@ -42,7 +45,8 @@ public class MusicHandler {
 	
 	public static void unmute() {
 		muted = false;
-		currentSong.play();
+		if(Config.music)
+			currentSong.play();
 	}
 	
 	public static void toggleMute() {

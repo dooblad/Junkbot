@@ -1,4 +1,4 @@
-package com.senior.junkbot.entity.projectiles;
+package com.senior.junkbot.entity.particles;
 
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.entity.MovingEntity;

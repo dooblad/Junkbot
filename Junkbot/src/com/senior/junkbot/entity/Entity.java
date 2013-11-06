@@ -42,9 +42,6 @@ public class Entity {
     	
     }
     
-    
-    
-   
     public void remove() {
         removed = true;
     }

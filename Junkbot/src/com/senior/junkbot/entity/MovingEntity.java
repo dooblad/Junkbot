@@ -18,6 +18,10 @@ public class MovingEntity extends Entity {
     	this(x, y, 0, 0, level);
     }
     
+    public MovingEntity(double x, double y, double xa, double ya) {
+    	this(x, y, xa, ya, null);
+    }
+    
     public MovingEntity(double x, double y, double xa, double ya, Level level) {
     	super(x, y, level);
     	this.xa = xa;

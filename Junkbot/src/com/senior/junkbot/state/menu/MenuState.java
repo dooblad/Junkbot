@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sound.Sounds;
-
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
-import com.senior.junkbot.entity.MenuItem;
-import com.senior.junkbot.entity.OptionsMenuItem;
-import com.senior.junkbot.entity.projectiles.MenuParticle;
+import com.senior.junkbot.entity.menu.BooleanMenuItem;
+import com.senior.junkbot.entity.menu.MenuItem;
+import com.senior.junkbot.entity.menu.MultiChoiceMenuItem;
+import com.senior.junkbot.entity.particles.MenuParticle;
 import com.senior.junkbot.state.GameState;
 import com.senior.junkbot.util.Font;
+
+import config.Config;
 
 public class MenuState extends GameState {
 	protected List<MenuParticle> particles;
@@ -32,6 +34,8 @@ public class MenuState extends GameState {
 	}
 
 	public void tick(InputHandler input) {
+		selectRequested = false;
+		
 		if(input.isKeyPressed(KeyEvent.VK_ENTER) || input.isLeftMousePressed())
 			selectRequested = true;
 		
@@ -54,10 +58,11 @@ public class MenuState extends GameState {
 			}
 		}
 		
-		if(changed)
+		if(Config.sfx && changed)
 			Sounds.select.play();
 		
-		spawnParticles();
+		if(Config.particles)
+			spawnParticles();
 		
 		for(int i = 0; i < particles.size(); i++) {
 			particles.get(i).tick();
@@ -68,16 +73,15 @@ public class MenuState extends GameState {
 	
 	public void render(Screen screen) {
 		for(int i = 0; i < menuItems.length; i++) {
-			if(menuItems[i] instanceof OptionsMenuItem) {
-				if(i == selected)
-					((OptionsMenuItem) menuItems[i]).render(MenuItem.SELECTED_COLOR, screen);
-				else
-					((OptionsMenuItem) menuItems[i]).render(MenuItem.DEFAULT_COLOR, screen);
+			int color;
+			if(i == selected) color = MenuItem.SELECTED_COLOR;
+			else color = MenuItem.DEFAULT_COLOR;
+			if(menuItems[i] instanceof BooleanMenuItem) {
+				((BooleanMenuItem) menuItems[i]).render(color, screen);
+			} else if (menuItems[i] instanceof MultiChoiceMenuItem){
+				((MultiChoiceMenuItem) menuItems[i]).render(color, screen);
 			} else {
-				if(i == selected)
-					menuItems[i].render(MenuItem.SELECTED_COLOR, screen);
-				else
-					menuItems[i].render(MenuItem.DEFAULT_COLOR, screen);
+				menuItems[i].render(color, screen);
 			}
 		}
 		
@@ -102,10 +106,11 @@ public class MenuState extends GameState {
 		int yo = (int) menuItems[selected].getY() + Bitmaps.font[0].getHeight() / 2;
 		
 		particles.add(new MenuParticle(xo, yo, -xa, ya, 0xFF00FF00, particleLife));
-		if(menuItems[selected] instanceof OptionsMenuItem) {
-			OptionsMenuItem item = ((OptionsMenuItem) menuItems[selected]);
-			particles.add(new MenuParticle(xo + Font.getPhraseWidth(item.getFullText()), yo, xa, ya, 0xFF00FF00, particleLife));
-		} else 
+		if(menuItems[selected] instanceof BooleanMenuItem)
+			particles.add(new MenuParticle(xo + Font.getPhraseWidth(((BooleanMenuItem) menuItems[selected]).getFullText()), yo, xa, ya, 0xFF00FF00, particleLife));
+		else if(menuItems[selected] instanceof MultiChoiceMenuItem)
+			particles.add(new MenuParticle(xo + Font.getPhraseWidth(((MultiChoiceMenuItem) menuItems[selected]).getFullText()), yo, xa, ya, 0xFF00FF00, particleLife));
+		else 
 			particles.add(new MenuParticle(xo + Font.getPhraseWidth(menuItems[selected].getText()), yo, xa, ya, 0xFF00FF00, particleLife));
 	}
 }

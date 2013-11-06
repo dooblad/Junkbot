@@ -15,6 +15,8 @@ import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 
+import config.Config;
+
 public class Player extends MovingEntity {
 	public static final double ACCELERATION = 1.0;
 	public static final double DECELERATION = 0.7;
@@ -80,7 +82,7 @@ public class Player extends MovingEntity {
 		tryMove();
 		
 		// This set of variables is to prevent the jump noise from being spammed while attached to a CleanerBot
-		if(jumped && wasCollidingY)
+		if(Config.sfx && jumped && wasCollidingY)
 			Sounds.jump.play();
 		
 		this.xa *= DECELERATION;

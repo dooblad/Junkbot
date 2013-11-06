@@ -11,9 +11,9 @@ import com.senior.junkbot.state.GameState;
 import com.senior.junkbot.state.menu.MainMenuState;
 import com.senior.junkbot.tile.Tile;
 
+import config.Config;
+
 public class Main extends GameLoop{
-	public static final int WIDTH = 400, HEIGHT = 300;
-	public static final int SCALE = 2;
 	private static final String NAME = "Junkbot";
 	private static final boolean RENDER_FPS = false;
 	private static final boolean VSYNC = false;
@@ -25,7 +25,9 @@ public class Main extends GameLoop{
 	private Game2D game;
 	
 	public Main() {
-		game = new Game2D(WIDTH, HEIGHT, SCALE, NAME, this);
+		Config.loadConfig(this);
+		
+		game = new Game2D(Config.width, Config.height, Config.scale, NAME, this);
 		game.getBitmapLoader().setIgnoredColors(0xFF00FF);
 		game.setRenderFPS(RENDER_FPS);
 		game.setVSync(VSYNC);

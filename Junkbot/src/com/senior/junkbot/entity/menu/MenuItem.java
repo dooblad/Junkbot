@@ -1,12 +1,14 @@
-package com.senior.junkbot.entity;
+package com.senior.junkbot.entity.menu;
 
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
-import com.senior.junkbot.Main;
+import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.util.BB;
 import com.senior.junkbot.util.Font;
+
+import config.Config;
 
 public class MenuItem extends Entity {
 	public static final int DEFAULT_COLOR = 0xFF4B692F, SELECTED_COLOR = 0xFF6ABE30;
@@ -28,7 +30,7 @@ public class MenuItem extends Entity {
 		this.text = text;
 	}
 	
-	public void tick() {
+	protected void tick() {
 		
 	}
 	
@@ -37,11 +39,11 @@ public class MenuItem extends Entity {
 	}
 	
 	public boolean mouseCollides(InputHandler input) {
-		return BB.pointIntersects(input.getMouseX() / Main.SCALE, input.getMouseY() / Main.SCALE, this.x, this.width, this.y, this.height);
+		return BB.pointIntersects(input.getMouseX() / Config.scale, input.getMouseY() / Config.scale, this.x, this.width, this.y, this.height);
 	}
 	
 	public void centerHorizontally() {
-		this.x = (Main.WIDTH - Font.getPhraseWidth(this.text)) / 2;
+		this.x = (Config.width - Font.getPhraseWidth(this.text)) / 2;
 	}
 	
 	// Getters and setters

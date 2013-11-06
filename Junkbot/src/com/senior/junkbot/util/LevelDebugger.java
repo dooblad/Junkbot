@@ -12,6 +12,8 @@ import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.tile.Tile;
 
+import config.Config;
+
 public class LevelDebugger {
 	private static final int FLYING_ACCELERATION = 3;
 	
@@ -89,8 +91,8 @@ public class LevelDebugger {
     		
         	// Player teleportation
     		if(input.isKeyPressed(KeyEvent.VK_T)) {
-    			player.setX(input.getMouseX() / Main.SCALE + level.getCamera().getXO());
-    			player.setY(input.getMouseY() / Main.SCALE + level.getCamera().getYO());
+    			player.setX(input.getMouseX() / Config.scale + level.getCamera().getXO());
+    			player.setY(input.getMouseY() / Config.scale + level.getCamera().getYO());
     		}
     		
     		if(input.isKeyPressed(KeyEvent.VK_F)) 
@@ -98,9 +100,9 @@ public class LevelDebugger {
     	}
     	
     	// Gives the position of the mouse in the level's coordinate space
-    	if(input.isLeftMousePressed()) {
-    		int mouseX = (int) (input.getMouseX() / Main.SCALE + level.getCamera().getXO());
-			int mouseY = (int) (input.getMouseY() / Main.SCALE + level.getCamera().getYO());
+    	if(input.isLeftMouseDown()) {
+    		int mouseX = (int) (input.getMouseX() / Config.scale + level.getCamera().getXO());
+			int mouseY = (int) (input.getMouseY() / Config.scale + level.getCamera().getYO());
 			
 			int xTile = mouseX / Tile.size;
 			int yTile = mouseY / Tile.size;

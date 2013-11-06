@@ -5,7 +5,10 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
+import com.senior.junkbot.entity.particles.WinPipeParticle;
 import com.senior.junkbot.util.BB;
+
+import config.Config;
 
 public class WinPipe extends Entity{
 	
@@ -21,7 +24,8 @@ public class WinPipe extends Entity{
 	}
 	
 	public void tick() {
-		
+		if(Config.particles)
+			level.add(new WinPipeParticle());
 	}
 	
 	public void render(Screen screen) {

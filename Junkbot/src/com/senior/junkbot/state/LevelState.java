@@ -12,6 +12,8 @@ import com.senior.junkbot.entity.StaticAnimation;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.util.LevelDebugger;
 
+import config.Config;
+
 public class LevelState extends GameState{
 	public static final int ID = 1;
 	
@@ -32,7 +34,8 @@ public class LevelState extends GameState{
 	public void tick(InputHandler input) {
 		if(input.isKeyPressed(KeyEvent.VK_ESCAPE) || input.isKeyPressed(KeyEvent.VK_P)) {
 			paused = !paused;
-			Sounds.pause.play();
+			if(Config.sfx)
+				Sounds.pause.play();
 		}
 		
 		if(!paused) {

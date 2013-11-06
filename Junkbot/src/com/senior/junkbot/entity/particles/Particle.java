@@ -1,6 +1,7 @@
-package com.senior.junkbot.entity;
+package com.senior.junkbot.entity.particles;
 
 import com.doobs.java2d.gfx.Screen;
+import com.senior.junkbot.entity.MovingEntity;
 import com.senior.junkbot.util.BB;
 
 public class Particle extends MovingEntity {
@@ -27,9 +28,7 @@ public class Particle extends MovingEntity {
 	}
 	
 	public Particle(double x, double y, double xa, double ya, int color, int maxLife) {
-		super(x, y);
-		this.xa = xa;
-		this.ya = ya;
+		super(x, y, xa, ya);
 		this.currentLife = 0;
 		this.maxLife = maxLife;
 		this.color = color;
@@ -70,6 +69,10 @@ public class Particle extends MovingEntity {
 	}
 	
 	public void render(Screen screen) {
+		screen.drawPoint(color, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
+	}
+	
+	public void render(int color, Screen screen) {
 		screen.drawPoint(color, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
 	}
 }

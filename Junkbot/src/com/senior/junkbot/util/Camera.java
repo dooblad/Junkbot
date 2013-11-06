@@ -3,9 +3,10 @@ package com.senior.junkbot.util;
 import java.awt.event.KeyEvent;
 
 import com.doobs.java2d.input.InputHandler;
-import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.MovingEntity;
+
+import config.Config;
 
 public class Camera {
 	private static final double ACCELERATION_FACTOR = 2.5;
@@ -62,13 +63,13 @@ public class Camera {
 			if((entity.getXA() > 0 && this.xa < 0) || (entity.getXA() < 0 && this.xa > 0))
 				this.xa *= 0.5;
 			
-			int limit = Main.WIDTH / 4;
+			int limit = Config.width / 4;
 			if(this.xa > limit + entity.getWidth() * 1.5) 
 				this.xa = limit + entity.getWidth() * 1.5;
 			if(this.xa < -(limit)) 
 				this.xa = -(limit);
-			this.xo = (entity.getX() - (Main.WIDTH + entity.getWidth()) / 2) + this.xa;
-			this.yo = (entity.getY() - (Main.HEIGHT + entity.getHeight()) / 2);
+			this.xo = (entity.getX() - (Config.width + entity.getWidth()) / 2) + this.xa;
+			this.yo = (entity.getY() - (Config.height + entity.getHeight()) / 2);
 		}
 	}
 	

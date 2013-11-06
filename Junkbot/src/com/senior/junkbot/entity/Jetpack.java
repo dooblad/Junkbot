@@ -3,7 +3,10 @@ package com.senior.junkbot.entity;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
+import com.senior.junkbot.entity.particles.Particle;
 import com.senior.junkbot.util.BB;
+
+import config.Config;
 
 public class Jetpack extends Entity {
 	private static final double THRUST = -0.45;
@@ -54,7 +57,8 @@ public class Jetpack extends Entity {
 				applyThrust();
 				fuel--;
 				int color = 0xFFFF0000 | (int) (Math.random() * 255) << 8;
-				level.add(new Particle(this.x + this.width / 2, this.y + this.height, Math.random() - Math.random(), Math.random() * 2, color, 30));
+				if(Config.particles)
+					level.add(new Particle(this.x + this.width / 2, this.y + this.height, Math.random() - Math.random(), Math.random() * 2, color, 30));
 			} else if(fuel < maxFuel)
 				fuel++;
 			

@@ -6,19 +6,19 @@ import com.doobs.java2d.gfx.Bitmap;
 import com.doobs.java2d.gfx.Screen;
 
 public class Font {
-	public static void drawString(String input, int xo, int yo, Screen screen) {
+	public static void drawString(String input, double xo, double yo, Screen screen) {
 		drawStringColored(input, 0xFFFFFFFF, xo, yo, screen);
 	}
 	
-	public static void drawStringColored(String input, int color, int xo, int yo, Screen screen) {
+	public static void drawStringColored(String input, int color, double xo, double yo, Screen screen) {
 		Bitmap[] fontSheet = Bitmaps.font;
 		for(int i = 0; i < input.length(); i++) {
 			if(input.charAt(i) == 32) continue;
-			screen.drawColored(fontSheet[parseCharToIndex(input.charAt(i))], color, xo + i * fontSheet[0].getWidth(), yo);
+			screen.drawColored(fontSheet[parseCharToIndex(input.charAt(i))], color, (int) (xo + i * fontSheet[0].getWidth()), (int) yo);
 		}
 	}
 	
-	public static void drawFixedDigitNumber(int input, int color, int numOfDigits, int xo, int yo, Screen screen) {
+	public static void drawFixedDigitNumber(int input, int color, int numOfDigits, double xo, double yo, Screen screen) {
 		int numLength = String.valueOf(input).length();
 				
 		String addon = "";

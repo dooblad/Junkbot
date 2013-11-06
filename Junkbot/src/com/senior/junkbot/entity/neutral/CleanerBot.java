@@ -4,9 +4,11 @@ import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.entity.MovingEntity;
-import com.senior.junkbot.entity.Particle;
 import com.senior.junkbot.entity.Player;
+import com.senior.junkbot.entity.particles.Particle;
 import com.senior.junkbot.util.BB;
+
+import config.Config;
 
 public class CleanerBot extends MovingEntity {
 	public static final double DEFAULT_SPEED = 1.0;
@@ -75,7 +77,7 @@ public class CleanerBot extends MovingEntity {
 			xo = (int)(Math.random() * openingLength) + (this.width - openingLength) / 2;
 		}
 		
-		if(xa != 0 || ya != 0)
+		if(Config.particles && xa != 0 || ya != 0)
 			level.add(new Particle(this.x + xo, this.y + yo, tempXA, tempYA, 0xFF00FF00, particleLife));
 	}
 	
