@@ -1,12 +1,10 @@
 package com.senior.junkbot.state.menu;
 
-import sound.Sounds;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
-import com.senior.junkbot.MusicHandler;
 import com.senior.junkbot.state.LevelState;
 
 import config.Config;
@@ -28,7 +26,6 @@ public class MainMenuState extends MenuState {
 		
 		if(selectRequested) {
 			if(selected == 0) {
-				MusicHandler.changeSong(Sounds.level);
 				main.changeState(new LevelState(main));
 			} else if(selected == 1) {
 				main.changeState(new OptionsMenuState(main));

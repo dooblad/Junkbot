@@ -36,7 +36,7 @@ public class MenuState extends GameState {
 	public void tick(InputHandler input) {
 		selectRequested = false;
 		
-		if(input.isKeyPressed(KeyEvent.VK_ENTER) || input.isLeftMousePressed())
+		if(input.isKeyPressed(KeyEvent.VK_ENTER) || (input.isLeftMousePressed() && menuItems[selected].mouseCollides(input)))
 			selectRequested = true;
 		
 		boolean changed = false;
@@ -58,7 +58,7 @@ public class MenuState extends GameState {
 			}
 		}
 		
-		if(Config.sfx && changed)
+		if(changed)
 			Sounds.select.play();
 		
 		if(Config.particles)

@@ -38,6 +38,10 @@ public class MenuItem extends Entity {
 		Font.drawStringColored(text, color, (int) this.x, (int) this.y, screen);
 	}
 	
+	public void render(boolean selected, Screen screen) {
+		Font.drawStringColored(text, selected ? SELECTED_COLOR : DEFAULT_COLOR, (int) this.x, (int) this.y, screen);
+	}
+	
 	public boolean mouseCollides(InputHandler input) {
 		return BB.pointIntersects(input.getMouseX() / Config.scale, input.getMouseY() / Config.scale, this.x, this.width, this.y, this.height);
 	}

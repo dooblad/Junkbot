@@ -11,11 +11,10 @@ import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.tile.Tile;
 import com.senior.junkbot.util.BB;
+import com.senior.junkbot.entity.enemy.CleanerTurret;
 import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
 import com.senior.junkbot.entity.projectiles.TurretShot;
-
-import config.Config;
 
 public class Player extends MovingEntity {
 	public static final double ACCELERATION = 1.0;
@@ -82,7 +81,7 @@ public class Player extends MovingEntity {
 		tryMove();
 		
 		// This set of variables is to prevent the jump noise from being spammed while attached to a CleanerBot
-		if(Config.sfx && jumped && wasCollidingY)
+		if(jumped && wasCollidingY)
 			Sounds.jump.play();
 		
 		this.xa *= DECELERATION;
@@ -156,8 +155,12 @@ public class Player extends MovingEntity {
 						level.resetLevel();
 					} else if(entity instanceof WinPipe && ((WinPipe) entity).collideWithPlayer(this)) {
 						level.nextLevel();
+						Sounds.levelComplete.play();
 					} else if(entity instanceof Jetpack && this.jetpack == null && ((Jetpack) entity).collideWithPlayer(this)) {
 						this.jetpack = (Jetpack) entity;
+						Sounds.jetpackGet.play();
+					} else if(entity instanceof CleanerTurret && ((CleanerTurret) entity).collideWithPlayer(this)) {
+						
 					}
 				}
 			}

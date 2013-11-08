@@ -4,8 +4,10 @@ import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.StaticAnimation;
 import com.senior.junkbot.entity.projectiles.TurretShot;
+import com.senior.junkbot.util.BB;
 
 public class CleanerTurret extends Entity {
 	public static final int DEFAULT_FIRE_RATE = 60;
@@ -35,13 +37,17 @@ public class CleanerTurret extends Entity {
 	}
 	
 	public CleanerTurret(int x, int y, double xa, double ya, int fireRate, int shotLife) {
+		this(x, y, xa, ya, fireRate, shotLife, 0);
+	}
+	
+	public CleanerTurret(int x, int y, double xa, double ya, int fireRate, int shotLife, int counterOffset) {
 		super(x, y);
 		this.width = Bitmaps.cleanerTurret[0].getWidth();
 		this.height = Bitmaps.cleanerTurret[0].getHeight();
 		this.shotXA = xa;
 		this.shotYA = ya;
 		this.fireRate = fireRate;
-		this.fireCounter = fireRate - 1;
+		this.fireCounter = fireRate - 1 - counterOffset;
 		this.shotLife = shotLife;
 		
 		calculateCannonPosition();
@@ -86,5 +92,30 @@ public class CleanerTurret extends Entity {
 				this.cannonY = -Bitmaps.cleanerTurretCannon.getWidth();
 			}
 		}
+	}
+	
+	public boolean collideWithPlayer(Player player) {
+		boolean collided = false;
+    	
+    	if(BB.intersects(player.getX(), player.getWidth(), player.getY() + player.getYA(), player.getHeight(), this.x, this.width, this.y, this.height)) {
+			if(player.getYA() > 0) {
+				player.setY(this.getY() - player.getHeight());
+			} else if(player.getYA() < 0) {
+				player.setY(this.y + this.height);
+			}
+			player.setYA(0);
+			player.setOnGround(true);
+			collided = true;
+		} else if(BB.intersects(player.getX() + player.getXA(), player.getWidth(), player.getY(), player.getHeight(), this.x, this.width, this.y, this.height)) {
+			if(player.getXA() > 0) {
+				player.setX(this.getX() - player.getWidth());
+			} else if(player.getXA() < 0) {
+				player.setX(this.getX() + this.getWidth());
+			}
+			player.setXA(0);
+			collided = true;
+		}
+
+    	return collided;
 	}
 }

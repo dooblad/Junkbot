@@ -1,5 +1,5 @@
 sfx:true
 music:true
 particles:true
-size:2
-scale:1
+size:1
+scale:2

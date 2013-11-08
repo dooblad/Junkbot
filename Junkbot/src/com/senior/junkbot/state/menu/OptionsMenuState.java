@@ -22,7 +22,7 @@ public class OptionsMenuState extends MenuState {
 				new BooleanMenuItem(Config.sfx, "sfx:"), 
 				new BooleanMenuItem(Config.music, "music:"), 
 				new BooleanMenuItem(Config.particles, "particles:"),
-				new MultiChoiceMenuItem("size:", "160x120", "320x240", "400x300", "640x480", "800x600"),
+				new MultiChoiceMenuItem("size:", "320x240", "400x300", "640x480", "800x600"),
 				new MultiChoiceMenuItem("scale:", "1", "2", "3"),
 				new MenuItem("apply"),
 				new MenuItem("cancel")};
@@ -71,7 +71,7 @@ public class OptionsMenuState extends MenuState {
 		Config.particles = ((BooleanMenuItem)menuItems[2]).getValue();
 		Config.size = ((MultiChoiceMenuItem)menuItems[3]).getSelected();
 		int[] size = Config.parseIntToSize(Config.size);
-		main.getGame2D().setSize(size[0], size[1]);
+		main.getGame2D().setScreenSize(size[0], size[1]);
 		Config.scale = ((MultiChoiceMenuItem)menuItems[4]).getSelected() + 1;
 		main.getGame2D().setScale(Config.scale);
 		Config.saveConfig();

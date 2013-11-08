@@ -8,6 +8,7 @@ import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
+import com.senior.junkbot.MusicHandler;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Jetpack;
 import com.senior.junkbot.entity.Player;
@@ -178,11 +179,13 @@ public class Level {
     public void previousLevel() {
     	currentLevel--;
     	resetLevel();
+    	MusicHandler.randomLevelSong();
     }
     
     public void nextLevel() {
     	currentLevel++;
     	resetLevel();
+    	MusicHandler.randomLevelSong();
     }
     
     public void resetLevel() {

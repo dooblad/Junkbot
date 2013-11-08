@@ -4,6 +4,8 @@ import static org.lwjgl.openal.AL10.*;
 
 import java.nio.IntBuffer;
 
+import config.Config;
+
 public class Sound {
 	private IntBuffer source;
 	private boolean playing;
@@ -20,7 +22,8 @@ public class Sound {
 	public void play() {
 		if(playing)
 			alSourceStop(source);
-		alSourcePlay(source);
+		if(Config.sfx)
+			alSourcePlay(source);
 		playing = true;
 	}
 	

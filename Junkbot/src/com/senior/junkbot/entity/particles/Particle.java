@@ -8,8 +8,9 @@ public class Particle extends MovingEntity {
 	private static final int DEFAULT_COLOR = 0xFFFFFFFF;
 	private static final int DEFAULT_LIFE = 120;
 	
-	private int currentLife, maxLife;
-	private int color;
+	protected int currentLife;
+	protected int maxLife;
+	protected int color;
 	
 	public Particle() {
 		this(0, 0, 0, 0, DEFAULT_COLOR, DEFAULT_LIFE);

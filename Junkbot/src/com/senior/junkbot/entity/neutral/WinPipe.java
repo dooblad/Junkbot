@@ -24,12 +24,22 @@ public class WinPipe extends Entity{
 	}
 	
 	public void tick() {
-		if(Config.particles)
-			level.add(new WinPipeParticle());
+		if(Config.particles) {
+			for(int i = 0; i < 3; i++) {
+				spawnParticles();
+			}
+		}
 	}
 	
 	public void render(Screen screen) {
 		screen.draw(Bitmaps.winPipe, (int) (this.x - level.getCamera().getXO()), (int) (this.y - level.getCamera().getYO()));
+	}
+	
+	private void spawnParticles() {
+		int x = (int) (Math.random() * (this.width + 40) - 20);
+		int y = (int) (Math.random() * 10) - 37;
+		double xa = (this.width / 2.0 - x) / 15;
+		level.add(new WinPipeParticle(this.x + x, this.y + y, xa, 1.0));
 	}
 	
 	public boolean collideWithPlayer(Player player) {

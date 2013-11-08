@@ -9,20 +9,33 @@ import com.doobs.java2d.input.InputHandler;
 import config.Config;
 
 public class MusicHandler {
+	private static final int MENU_SONGS = 3;
+	
 	public static boolean muted = false;
 	public static Sound currentSong;
+	public static Sound[] songs;
 	
 	public static void tick(InputHandler input) {
 		if(input.isKeyPressed(KeyEvent.VK_M))
 			toggleMute();
 	}
 	
-	public static void changeSong(Sound song) {
+	public static void changeSong(int songNumber) {
 		if(currentSong != null)
 			currentSong.stop();
-		currentSong = song;
+		currentSong = songs[songNumber];
 		if(Config.music && !muted)
-			song.play();
+			songs[songNumber].play();
+	}
+	
+	public static void randomTitleSong() {
+		int random = (int) (Math.random() * MENU_SONGS);
+		changeSong(random);
+	}
+	
+	public static void randomLevelSong() {
+		int random = (int) (Math.random() * (songs.length - MENU_SONGS) + MENU_SONGS - 1);
+		changeSong(random);
 	}
 	
 	public static void playMusic() {

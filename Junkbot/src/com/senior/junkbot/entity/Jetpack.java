@@ -1,5 +1,6 @@
 package com.senior.junkbot.entity;
 
+import sound.Sounds;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
@@ -17,6 +18,7 @@ public class Jetpack extends Entity {
 	private boolean active;
 	
 	private int fuel, maxFuel;
+	private int soundTimer;
 	
 	public Jetpack() {
 		this(0, 0, null);
@@ -39,6 +41,7 @@ public class Jetpack extends Entity {
 		this.active = false;
 		this.maxFuel = DEFAULT_FUEL;
 		this.fuel = maxFuel; 
+		this.soundTimer = 0;
 	}
 	
 	public void tick() {
@@ -56,11 +59,18 @@ public class Jetpack extends Entity {
 			if(active && fuel > 0) {
 				applyThrust();
 				fuel--;
-				int color = 0xFFFF0000 | (int) (Math.random() * 255) << 8;
-				if(Config.particles)
-					level.add(new Particle(this.x + this.width / 2, this.y + this.height, Math.random() - Math.random(), Math.random() * 2, color, 30));
-			} else if(fuel < maxFuel)
-				fuel++;
+				if(soundTimer++ % 10 == 0)
+					Sounds.jetpack.play();
+				for(int i = 0; i < 3; i++) {
+					spawnParticles();
+				}
+			} else {
+				if(fuel < maxFuel)
+					fuel++;
+				soundTimer = 0;
+				Sounds.jetpack.stop();
+			}
+				
 			
 			this.y = entity.getY() + (entity.getHeight() - this.height) / 2 + 1;
 			
@@ -83,14 +93,21 @@ public class Jetpack extends Entity {
 			screen.drawPoint(0xFF000000 | red | green, xo, (yo + 8 - i));
 		}
 	}
+	
+	public void spawnParticles() {
+		int color = 0xFFFF0000 | (int) (Math.random() * 255) << 8;
+		if(Config.particles)
+			level.add(new Particle(this.x + this.width / 2, this.y + this.height, Math.random() - Math.random(), Math.random() * 2, color, 30));
+	}
 
 	public boolean collideWithPlayer(Player player) {
 		boolean collided = false;
     	
-    	if(BB.intersects(player.getX() + player.getXA(), player.getWidth(), player.getY() + player.getYA(), player.getHeight(), this.x, this.width, this.y, this.height)) 
+    	if(BB.intersects(player.getX(), player.getWidth(), player.getY(), player.getHeight(), this.x, this.width, this.y, this.height)) {
 			collided = true;
+			this.entity = player;
+    	}
     	
-    	this.entity = player;
     	
     	return collided;
 	}

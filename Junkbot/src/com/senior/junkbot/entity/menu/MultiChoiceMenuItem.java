@@ -47,8 +47,7 @@ public class MultiChoiceMenuItem extends MenuItem {
 			changed = false;
 		
 		if(changed) {
-			if(Config.sfx)
-				Sounds.optionChange.play();
+			Sounds.optionChange.play();
 			calculateWidth();
 			centerHorizontally();
 		}

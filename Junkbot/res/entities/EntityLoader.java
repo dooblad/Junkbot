@@ -38,24 +38,26 @@ public class EntityLoader {
 					}
 					
 					level.add(new CleanerBot(x, y, xa, ya, turnTime));
-				} else if(split[0].equals("CT")) { // Cleaner Turret (int x, int y, double xa, double ya, int fireRate, int shotLife)
+				} else if(split[0].equals("CT")) { // Cleaner Turret (int x, int y, double xa, double ya, int fireRate, int shotLife, int counterOffset)
 					int x = 0;
 					int y = 0;
 					double xa = 1;
 					double ya = 0;
 					int fireRate = CleanerTurret.DEFAULT_FIRE_RATE;
 					int shotLife = CleanerTurret.DEFAULT_SHOT_LIFE;
+					int counterOffset = 0;
 					
 					for(int i = 1; i < split.length; i++) {
 						if(i == 1) x = Integer.parseInt(split[i]);
 						else if(i == 2) y = Integer.parseInt(split[i]);
-						else if(i == 3) xa = Integer.parseInt(split[i]);
-						else if(i == 4) ya = Integer.parseInt(split[i]);
+						else if(i == 3) xa = Double.parseDouble(split[i]);
+						else if(i == 4) ya = Double.parseDouble(split[i]);
 						else if(i == 5) fireRate = Integer.parseInt(split[i]);
 						else if(i == 6) shotLife = Integer.parseInt(split[i]);
+						else if(i == 7) counterOffset = Integer.parseInt(split[i]);
 					}
 					
-					level.add(new CleanerTurret(x, y, xa, ya, fireRate, shotLife));
+					level.add(new CleanerTurret(x, y, xa, ya, fireRate, shotLife, counterOffset));
 				} else if(split[0].equals("WP")) { // Win Pipe (int x, int y)
 					level.add(new WinPipe(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
 				} else if(split[0].equals("JP")) { // Jetpack (int x, int y)

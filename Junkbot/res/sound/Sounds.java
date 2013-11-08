@@ -10,13 +10,14 @@ import org.lwjgl.util.WaveData;
 
 import com.jcraft.oggdecoder.OggData;
 import com.jcraft.oggdecoder.OggDecoder;
+import com.senior.junkbot.MusicHandler;
 
 import static org.lwjgl.openal.AL10.*;
 
 public class Sounds {
 	public static Sound ground, jetpack, jump;
+	public static Sound jetpackGet, levelComplete;
 	public static Sound select, optionChange, pause;
-	public static Sound title, level;
 	
 	public static void init() {
 		try {
@@ -30,12 +31,23 @@ public class Sounds {
 		jetpack = loadSound("sfx/jetpack.ogg", true);
 		jump = loadSound("sfx/jump.ogg", false);
 		
+		jetpackGet = loadSound("sfx/jetpackGet.wav", false);
+		levelComplete = loadSound("sfx/levelComplete.wav", false);
+		
 		select = loadSound("sfx/select.wav", false);
 		optionChange = loadSound("sfx/optionChange.wav", false);
 		pause = loadSound("sfx/pause.wav", false);
 		
-		title = loadSound("music/title.ogg", true);
-		level = loadSound("music/level.ogg", true);
+		MusicHandler.songs = new Sound[] {
+			loadSound("music/title/Aethereal.ogg", true),
+			loadSound("music/title/eCommerce.ogg", true),
+			loadSound("music/title/Hackers Title.ogg", true),
+			loadSound("music/level/2ndBallad.ogg", true),
+			loadSound("music/level/AngryRobotIII.ogg", true),
+			loadSound("music/level/Battle.ogg", true),
+			loadSound("music/level/Causeway.ogg", true),
+			loadSound("music/level/Club Fight.ogg", true),
+		};
     }
 	
 	public static Sound loadSound(String URL, boolean looping) {

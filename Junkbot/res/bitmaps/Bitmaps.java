@@ -17,6 +17,7 @@ public class Bitmaps {
 	public static Bitmap turretShot;
 	public static Bitmap cleanerBot;
 	public static Bitmap winPipe;
+	public static Bitmap pauseBorder;
 	public static Bitmap mainMenu, optionsMenu;
 	public static Bitmap[][] tiles;
 	public static Bitmap[] levels;
@@ -34,6 +35,8 @@ public class Bitmaps {
 		
 		cleanerBot = loadBitmap(loader, "entities/cleanerBot.png");
 		winPipe = loadBitmap(loader, "entities/winPipe.png");
+		
+		pauseBorder = loadBitmap(loader, "pauseBorder.png");
 		
 		mainMenu = loadBitmap(loader, "menus/mainMenu.png");
 		optionsMenu = loadBitmap(loader, "menus/optionsMenu.png");

@@ -42,8 +42,7 @@ public class BooleanMenuItem extends MenuItem {
 	public void tick(InputHandler input) {
 		if(input.isKeyPressed(KeyEvent.VK_LEFT) || input.isRightMousePressed() || input.isKeyPressed(KeyEvent.VK_RIGHT) || input.isLeftMousePressed()) {
 			value = !value;
-			if(Config.sfx)
-				Sounds.optionChange.play();
+			Sounds.optionChange.play();
 			calculateWidth();
 			centerHorizontally();
 		}
