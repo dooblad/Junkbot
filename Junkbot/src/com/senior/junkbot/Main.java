@@ -1,7 +1,5 @@
 package com.senior.junkbot;
 
-import java.awt.event.KeyEvent;
-
 import sound.Sounds;
 import bitmaps.Bitmaps;
 
@@ -11,7 +9,7 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.state.GameState;
 import com.senior.junkbot.state.LevelState;
-import com.senior.junkbot.state.menu.MainMenuState;
+import com.senior.junkbot.state.menu.LoadState;
 import com.senior.junkbot.state.menu.MenuState;
 import com.senior.junkbot.tile.Tile;
 
@@ -32,27 +30,24 @@ public class Main extends GameLoop{
 		Config.loadConfig(this);
 		
 		game = new Game2D(Config.width, Config.height, Config.scale, NAME, this);
+		
 		game.getBitmapLoader().setIgnoredColors(0xFF00FF);
 		game.setRenderFPS(RENDER_FPS);
 		game.setVSync(VSYNC);
 		game.getInputHandler().setKeyRange(600);
 		
 		Bitmaps.init(game.getBitmapLoader());
-		Sounds.init();
+		//Sounds.init();
 		Tile.init();
 		
-		currentState = new MainMenuState(this);
+		currentState = new LoadState(this);
 		
 		game.start();
-		
-		MusicHandler.randomTitleSong();
 	}
 	
 	public void tick(InputHandler input, boolean paused) {
 		currentState.tick(input);
 		MusicHandler.tick(input);
-		if(input.isKeyPressed(KeyEvent.VK_G))
-			MusicHandler.randomTitleSong();
 	}
 	
 	public void render(Screen screen, boolean paused) {
@@ -61,11 +56,11 @@ public class Main extends GameLoop{
 	}
 	
 	public void changeState(GameState newState) {
-		this.currentState = newState;
 		if(!(currentState instanceof MenuState) && newState instanceof MenuState)
-			MusicHandler.randomTitleSong();
+			MusicHandler.randomMenuSong();
 		else if(newState instanceof LevelState)
 			MusicHandler.randomLevelSong();
+		this.currentState = newState;
 	}
 	
 	public void exit() {

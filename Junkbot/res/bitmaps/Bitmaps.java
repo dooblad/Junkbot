@@ -10,6 +10,7 @@ import com.doobs.java2d.gfx.BitmapLoader;
 import com.senior.junkbot.level.Level;
 
 public class Bitmaps {
+	public static Bitmap loading, progressBorder;
 	public static Bitmap player;
 	public static Bitmap jetpack;
 	public static Bitmap[] cleanerTurret;
@@ -25,6 +26,9 @@ public class Bitmaps {
 	public static Bitmap[] font;
 	
 	public static void init(BitmapLoader loader) {
+		loading = loadBitmap(loader, "loading.png");
+		progressBorder = loadBitmap(loader, "progressBorder.png");
+		
 		player = loadBitmap(loader, "entities/player.png");
 		
 		jetpack = loadBitmap(loader, "entities/jetpack.png");

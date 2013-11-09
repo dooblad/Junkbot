@@ -133,7 +133,7 @@ public class Level {
                 if (xSlotOld >= 0 && ySlotOld >= 0 && xSlotOld < width && ySlotOld < height) {
                     entityMap[xSlotOld + ySlotOld * width].remove(e);
                 }
-                if(!(entities.get(i) instanceof Player)) 
+                if(!(entities.get(i) instanceof Player) && !(entities.get(i) instanceof Jetpack)) 
                 	entities.remove(i--);
             } else {
                 if (e.getXSlot() != xSlotOld || e.getYSlot() != ySlotOld) {

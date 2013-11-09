@@ -21,7 +21,7 @@ public class Player extends MovingEntity {
 	public static final double DECELERATION = 0.7;
 	public static final double JUMP = 7.0;
 	public static final double START_MASS = 5.0;
-	public static final double TERMINAL_VELOCITY = 10.0;
+	public static final double TERMINAL_VELOCITY = 15.0;
 	
 	private Jetpack jetpack;
 	
@@ -80,7 +80,7 @@ public class Player extends MovingEntity {
 		collidedY = false;
 		tryMove();
 		
-		// This set of variables is to prevent the jump noise from being spammed while attached to a CleanerBot
+		// This statement is to prevent the jump noise from being spammed while attached to a CleanerBot
 		if(jumped && wasCollidingY)
 			Sounds.jump.play();
 		
@@ -131,6 +131,7 @@ public class Player extends MovingEntity {
 			if(this.y < bb.getY()) {
 				this.y = bb.getY() - this.height;
 				onGround = true;
+				if(this.ya == Player.TERMINAL_VELOCITY) Sounds.ground.play();
 			} else if(this.y > (bb.getY() + bb.getHeight())) {
 				this.y = bb.getY() + bb.getHeight();
 			}
@@ -172,7 +173,11 @@ public class Player extends MovingEntity {
 		this.ya = 0;
 		this.x = level.getXSpawn();
 		this.y = level.getYSpawn();
-		this.jetpack = null;
+		if(Level.currentLevel == 4) // Level where the player gets the jetpack
+			this.jetpack = null;
+		else if(Level.currentLevel > 4)
+			this.jetpack = new Jetpack(this);
+		Sounds.jetpack.stop();
 	}
 	
 	// Getters and Setters

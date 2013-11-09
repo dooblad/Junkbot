@@ -28,7 +28,7 @@ public class MusicHandler {
 			songs[songNumber].play();
 	}
 	
-	public static void randomTitleSong() {
+	public static void randomMenuSong() {
 		int random = (int) (Math.random() * MENU_SONGS);
 		changeSong(random);
 	}
