@@ -5,7 +5,7 @@ import bitmaps.Bitmaps;
 import com.doobs.java2d.gfx.Screen;
 import com.senior.junkbot.entity.Entity;
 import com.senior.junkbot.entity.Player;
-import com.senior.junkbot.entity.StaticAnimation;
+import com.senior.junkbot.entity.GlobalAnimation;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 import com.senior.junkbot.util.BB;
 
@@ -63,7 +63,7 @@ public class CleanerTurret extends Entity {
 	public void render(Screen screen) {
 		int xo = (int) (this.x - level.getCamera().getXO());
 		int yo = (int) (this.y - level.getCamera().getYO());
-		screen.draw(Bitmaps.cleanerTurret[(int) (StaticAnimation.getTimerPercentage() * Bitmaps.cleanerTurret.length)], xo, yo);
+		screen.draw(Bitmaps.cleanerTurret[(int) (GlobalAnimation.getTimerPercentage() * Bitmaps.cleanerTurret.length)], xo, yo);
 		
 		if(Math.abs(this.shotXA) > Math.abs(this.shotYA)) {
 			screen.draw(Bitmaps.cleanerTurretCannon, cannonX + xo, cannonY + yo);
@@ -73,7 +73,7 @@ public class CleanerTurret extends Entity {
 	}
 	
 	private void spawnShot() {
-		level.add(new TurretShot((int) (this.x + cannonX), (int) (this.y + cannonY), this.shotXA, this.shotYA, this.shotLife));
+		level.add(new TurretShot((int) (this.x + cannonX + 2), (int) (this.y + cannonY), this.shotXA, this.shotYA, this.shotLife));
 	}
 	
 	private void calculateCannonPosition() {

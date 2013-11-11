@@ -1,6 +1,6 @@
 package com.senior.junkbot.entity;
 
-public class StaticAnimation {
+public class GlobalAnimation {
 	public static final int TIMER_MAX = 30;
 	
 	public static int animationTimer = 0;

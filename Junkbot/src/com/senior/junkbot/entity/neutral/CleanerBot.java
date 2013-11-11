@@ -45,7 +45,8 @@ public class CleanerBot extends MovingEntity {
 			turnCounter = 0;
 		}
 		
-		spawnParticles();
+		if(Config.particles)
+			spawnParticles();
 			
 		tryMove();
 	}

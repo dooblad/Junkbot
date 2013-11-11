@@ -73,6 +73,11 @@ public class Camera {
 		}
 	}
 	
+	public void centerOnEntity() {
+		this.xo = (entity.getX() - (Config.width + entity.getWidth()) / 2);
+		this.yo = (entity.getY() - (Config.height + entity.getHeight()) / 2);
+	}
+	
 	public void addEntity(MovingEntity entity) {
 		this.entity = entity;
 	}

@@ -14,6 +14,7 @@ import com.senior.junkbot.util.BB;
 import com.senior.junkbot.entity.enemy.CleanerTurret;
 import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
+import com.senior.junkbot.entity.pickups.Jetpack;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 
 public class Player extends MovingEntity {
@@ -66,10 +67,11 @@ public class Player extends MovingEntity {
 		this.ya += Level.GRAVITY * mass;
 		
 		if(jetpack != null) { 
-			if(input.keys[KeyEvent.VK_SPACE])
+			if(input.keys[KeyEvent.VK_SPACE]) {
 				jetpack.activate();
-			else
+			} else {
 				jetpack.deactivate();
+			}
 		}
 		
 		if(this.ya > TERMINAL_VELOCITY) this.ya = TERMINAL_VELOCITY;
@@ -157,9 +159,14 @@ public class Player extends MovingEntity {
 					} else if(entity instanceof WinPipe && ((WinPipe) entity).collideWithPlayer(this)) {
 						level.nextLevel();
 						Sounds.levelComplete.play();
-					} else if(entity instanceof Jetpack && this.jetpack == null && ((Jetpack) entity).collideWithPlayer(this)) {
-						this.jetpack = (Jetpack) entity;
-						Sounds.jetpackGet.play();
+					} else if(entity instanceof Jetpack && ((Jetpack) entity).collideWithPlayer(this)) {
+						if(this.jetpack == null) {
+							this.jetpack = (Jetpack) entity;
+							Sounds.jetpackGet.play();
+						} else if(((Jetpack)entity) != this.jetpack) {
+							this.jetpack.setFuel(jetpack.getMaxFuel());
+							entity.remove();
+						}
 					} else if(entity instanceof CleanerTurret && ((CleanerTurret) entity).collideWithPlayer(this)) {
 						
 					}
@@ -175,9 +182,12 @@ public class Player extends MovingEntity {
 		this.y = level.getYSpawn();
 		if(Level.currentLevel == 4) // Level where the player gets the jetpack
 			this.jetpack = null;
-		else if(Level.currentLevel > 4)
+		else if(Level.currentLevel > 4) {
 			this.jetpack = new Jetpack(this);
+			level.add(this.jetpack);
+		}
 		Sounds.jetpack.stop();
+		this.mass = START_MASS - Level.currentLevel * 0.25;
 	}
 	
 	// Getters and Setters

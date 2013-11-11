@@ -1,16 +1,23 @@
-package com.senior.junkbot.entity;
+package com.senior.junkbot.entity.pickups;
+
+import java.awt.event.KeyEvent;
 
 import sound.Sounds;
 import bitmaps.Bitmaps;
 
 import com.doobs.java2d.gfx.Screen;
+import com.doobs.java2d.input.InputHandler;
+import com.senior.junkbot.entity.Entity;
+import com.senior.junkbot.entity.MovingEntity;
+import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.particles.Particle;
+import com.senior.junkbot.level.Level;
 import com.senior.junkbot.util.BB;
 
 import config.Config;
 
 public class Jetpack extends Entity {
-	private static final double THRUST = -0.45;
+	private static final double THRUST = -3.0;
 	private static final int DEFAULT_FUEL = 90;
 	
 	private MovingEntity entity;
@@ -44,7 +51,7 @@ public class Jetpack extends Entity {
 		this.soundTimer = 0;
 	}
 	
-	public void tick() {
+	public void tick(InputHandler input) {
 		if(entity != null) {
 			if(entity.getXA() > 0)
 				facingRight = true;
@@ -57,14 +64,14 @@ public class Jetpack extends Entity {
 				this.x = entity.getX() + entity.getWidth();
 			
 			if(active && fuel > 0) {
-				applyThrust();
+				applyThrust(input);
 				fuel--;
 				if(soundTimer++ % 10 == 0)
 					Sounds.jetpack.play();
 				for(int i = 0; i < 3; i++) {
 					spawnParticles();
 				}
-			} else {
+			} else if(!input.keys[KeyEvent.VK_SPACE]){
 				if(fuel < maxFuel)
 					fuel++;
 				soundTimer = 0;
@@ -120,7 +127,45 @@ public class Jetpack extends Entity {
 		this.active = false;
 	}
 	
-	public void applyThrust() {
-		entity.applyYA(THRUST);
+	public void applyThrust(InputHandler input) {
+		if(entity instanceof Player) {
+			Player player = (Player) entity;
+			if(input.keys[KeyEvent.VK_W])
+				entity.setYA(THRUST - Level.GRAVITY * player.getMass());
+			else if(input.keys[KeyEvent.VK_S])
+				entity.setYA(-THRUST);
+			else
+				entity.setYA(-Level.GRAVITY * player.getMass());
+			//entity.applyYA(THRUST);
+		}
+	}
+	
+	// Getters and setters
+	public boolean hasEntity() {
+		return entity != null;
+	}
+	
+	public void setEntity(MovingEntity entity) {
+		this.entity = entity;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public int getFuel() {
+		return fuel;
+	}
+	
+	public void setFuel(int fuel) {
+		this.fuel = fuel;
+	}
+	
+	public int getMaxFuel() {
+		return maxFuel;
+	}
+	
+	public void setMaxFuel(int maxFuel) {
+		this.maxFuel = maxFuel;
 	}
 }

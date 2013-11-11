@@ -10,7 +10,7 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.Main;
 import com.senior.junkbot.entity.Player;
-import com.senior.junkbot.entity.StaticAnimation;
+import com.senior.junkbot.entity.GlobalAnimation;
 import com.senior.junkbot.entity.menu.MenuItem;
 import com.senior.junkbot.level.Level;
 import com.senior.junkbot.state.menu.MainMenuState;
@@ -50,7 +50,7 @@ public class LevelState extends GameState{
 		}
 		
 		if(!paused) {
-			StaticAnimation.tick();
+			GlobalAnimation.tick();
 			level.tick(input);
 			if(Main.debug)
 				levelDebugger.tick(input);

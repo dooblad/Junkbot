@@ -86,8 +86,8 @@ public class LoadState extends GameState {
 		int barX = (Config.width - 64) / 2;
 		int barY = (Config.height - 10) / 2 + 40;
 		screen.draw(Bitmaps.progressBorder, barX - 2, barY - 2);
-		screen.fillRect(0xFF99E550, barX, barY, (int) ((loadCounter / 16.0) * 64), 2);
-		screen.fillRect(0xFF00FF00, barX, barY + 2, (int) ((loadCounter / 16.0) * 64), 8);
+		screen.fillRect(0xFF99E550, barX, barY, (int) ((loadCounter / (double) files.length) * 64), 2);
+		screen.fillRect(0xFF00FF00, barX, barY + 2, (int) ((loadCounter / (double) files.length) * 64), 8);
 		rendered = true;
 	}
 

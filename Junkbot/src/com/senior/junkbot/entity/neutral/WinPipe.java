@@ -39,7 +39,7 @@ public class WinPipe extends Entity{
 		int x = (int) (Math.random() * (this.width + 40) - 20);
 		int y = (int) (Math.random() * 10) - 37;
 		double xa = (this.width / 2.0 - x) / 15;
-		level.add(new WinPipeParticle(this.x + x, this.y + y, xa, 1.0));
+		level.add(new WinPipeParticle(this.x + x, this.y + y, xa, 1.0, this.y));
 	}
 	
 	public boolean collideWithPlayer(Player player) {

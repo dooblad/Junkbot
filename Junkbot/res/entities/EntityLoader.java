@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.senior.junkbot.entity.Jetpack;
 import com.senior.junkbot.entity.enemy.CleanerTurret;
 import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
+import com.senior.junkbot.entity.pickups.Jetpack;
 import com.senior.junkbot.level.Level;
 
 public class EntityLoader {

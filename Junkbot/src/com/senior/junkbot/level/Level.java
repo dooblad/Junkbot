@@ -10,13 +10,13 @@ import com.doobs.java2d.gfx.Screen;
 import com.doobs.java2d.input.InputHandler;
 import com.senior.junkbot.MusicHandler;
 import com.senior.junkbot.entity.Entity;
-import com.senior.junkbot.entity.Jetpack;
 import com.senior.junkbot.entity.Player;
 import com.senior.junkbot.entity.enemy.CleanerTurret;
 import com.senior.junkbot.entity.neutral.CleanerBot;
 import com.senior.junkbot.entity.neutral.WinPipe;
 import com.senior.junkbot.entity.particles.Particle;
 import com.senior.junkbot.entity.particles.WinPipeParticle;
+import com.senior.junkbot.entity.pickups.Jetpack;
 import com.senior.junkbot.entity.projectiles.TurretShot;
 import com.senior.junkbot.tile.AirTile;
 import com.senior.junkbot.tile.GroundTile;
@@ -118,7 +118,7 @@ public class Level {
     		else if(entity instanceof CleanerTurret) ((CleanerTurret) entity).tick();
     		else if(entity instanceof Player) ((Player) entity).tick(input);
     		else if(entity instanceof WinPipe) ((WinPipe) entity).tick();
-    		else if(entity instanceof Jetpack) ((Jetpack) entity).tick();
+    		else if(entity instanceof Jetpack) ((Jetpack) entity).tick(input);
     	}
     	
     	camera.tick(input);
@@ -177,13 +177,13 @@ public class Level {
     }
     
     public void previousLevel() {
-    	currentLevel--;
+    	if(--currentLevel < 0) currentLevel = Bitmaps.levels.length - 1;
     	resetLevel();
     	MusicHandler.randomLevelSong();
     }
     
     public void nextLevel() {
-    	currentLevel++;
+    	if(++currentLevel > Bitmaps.levels.length - 1) currentLevel = 0;
     	resetLevel();
     	MusicHandler.randomLevelSong();
     }
@@ -192,6 +192,7 @@ public class Level {
     	loadLevel();
     	addPlayer(player);
     	player.respawn();
+    	camera.centerOnEntity();
     }
     
     // Getters and Setters
